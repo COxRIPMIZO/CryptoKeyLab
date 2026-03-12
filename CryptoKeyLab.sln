@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoKeyLab", "CryptoKeyLab\CryptoKeyLab.csproj", "{4C0F8B69-FC0F-41B7-A0BA-EC1CCDEB0D19}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THE_PRINCE_CRYPTOGRAPHY", "..\..\..\Desktop Application\THE_PRINCE\THE_PRINCE_CRYPTOGRAPHY\THE_PRINCE_CRYPTOGRAPHY.csproj", "{385F69EB-2B88-4420-B713-B5C0327D6DC5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{CE5B40B0-9138-4A57-A62E-9C869157D3BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{7EB31059-58CD-4337-9325-77366B9B412E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4C0F8B69-FC0F-41B7-A0BA-EC1CCDEB0D19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C0F8B69-FC0F-41B7-A0BA-EC1CCDEB0D19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C0F8B69-FC0F-41B7-A0BA-EC1CCDEB0D19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C0F8B69-FC0F-41B7-A0BA-EC1CCDEB0D19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{385F69EB-2B88-4420-B713-B5C0327D6DC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{385F69EB-2B88-4420-B713-B5C0327D6DC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{385F69EB-2B88-4420-B713-B5C0327D6DC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{385F69EB-2B88-4420-B713-B5C0327D6DC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EB31059-58CD-4337-9325-77366B9B412E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EB31059-58CD-4337-9325-77366B9B412E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EB31059-58CD-4337-9325-77366B9B412E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EB31059-58CD-4337-9325-77366B9B412E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7EB31059-58CD-4337-9325-77366B9B412E} = {CE5B40B0-9138-4A57-A62E-9C869157D3BB}
+	EndGlobalSection
+EndGlobal

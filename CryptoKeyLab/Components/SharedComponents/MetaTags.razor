@@ -1,0 +1,49 @@
+﻿@code {
+	[Parameter]
+	public string? Title { get; set; }
+
+	[Parameter]
+	public string? Description { get; set; }
+	
+	[Parameter]
+	public string? Keywords { get; set; }
+	
+	[Parameter]
+	public string? ImageUrl { get; set; }
+	
+	[Parameter]
+	public string? Url { get; set; }
+}
+
+<HeadContent>
+	@if (!string.IsNullOrEmpty(Title))
+	{
+		<title>@Title</title>
+		<meta property="og:title" content="@Title" />
+		<meta name="twitter:title" content="@Title" />
+	}
+	@if (!string.IsNullOrEmpty(Description))
+	{
+		<meta name="description" content="@Description" />
+		<meta property="og:description" content="@Description" />
+		<meta name="twitter:description" content="@Description" />
+	}
+	@if (!string.IsNullOrEmpty(Keywords))
+	{
+		<meta name="keywords" content="@Keywords" />
+	}
+	@if (!string.IsNullOrEmpty(ImageUrl))
+	{
+		<meta property="og:image" content="@ImageUrl" />
+		<meta name="twitter:image" content="@ImageUrl" />
+	}
+	@if (!string.IsNullOrEmpty(Url))
+	{
+		<meta property="og:url" content="@Url" />
+		<meta name="twitter:url" content="@Url" />
+	}
+
+	<!-- Required for Twitter Cards -->
+	<meta property="og:type" content="website" />
+	<meta name="twitter:card" content="summary_large_image" />
+</HeadContent>

@@ -1,0 +1,125 @@
+{
+  "version": 3,
+  "targets": {
+    "net9.0": {
+      "Models/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/Models.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Models.dll": {}
+        }
+      },
+      "THE_PRINCE_CRYPTOGRAPHY/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/THE_PRINCE_CRYPTOGRAPHY.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/THE_PRINCE_CRYPTOGRAPHY.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Models/1.0.0": {
+      "type": "project",
+      "path": "../Models/Models.csproj",
+      "msbuildProject": "../Models/Models.csproj"
+    },
+    "THE_PRINCE_CRYPTOGRAPHY/1.0.0": {
+      "type": "project",
+      "path": "../../../../Desktop Application/THE_PRINCE/THE_PRINCE_CRYPTOGRAPHY/THE_PRINCE_CRYPTOGRAPHY.csproj",
+      "msbuildProject": "../../../../Desktop Application/THE_PRINCE/THE_PRINCE_CRYPTOGRAPHY/THE_PRINCE_CRYPTOGRAPHY.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net9.0": [
+      "Models >= 1.0.0",
+      "THE_PRINCE_CRYPTOGRAPHY >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\gyvis\\.nuget\\packages\\": {},
+    "E:\\Visual Studio\\Visual Studio Tools\\NuGetPackages": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "D:\\Applications\\Web Application\\VisualStudio\\CryptoKeyLab\\CryptoKeyLab\\CryptoKeyLab.csproj",
+      "projectName": "CryptoKeyLab",
+      "projectPath": "D:\\Applications\\Web Application\\VisualStudio\\CryptoKeyLab\\CryptoKeyLab\\CryptoKeyLab.csproj",
+      "packagesPath": "C:\\Users\\gyvis\\.nuget\\packages\\",
+      "outputPath": "D:\\Applications\\Web Application\\VisualStudio\\CryptoKeyLab\\CryptoKeyLab\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "E:\\Visual Studio\\Visual Studio Tools\\NuGetPackages"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\gyvis\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net9.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "projectReferences": {
+            "D:\\Applications\\Desktop Application\\THE_PRINCE\\THE_PRINCE_CRYPTOGRAPHY\\THE_PRINCE_CRYPTOGRAPHY.csproj": {
+              "projectPath": "D:\\Applications\\Desktop Application\\THE_PRINCE\\THE_PRINCE_CRYPTOGRAPHY\\THE_PRINCE_CRYPTOGRAPHY.csproj"
+            },
+            "D:\\Applications\\Web Application\\VisualStudio\\CryptoKeyLab\\Models\\Models.csproj": {
+              "projectPath": "D:\\Applications\\Web Application\\VisualStudio\\CryptoKeyLab\\Models\\Models.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.300"
+    },
+    "frameworks": {
+      "net9.0": {
+        "targetAlias": "net9.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.AspNetCore.App": {
+            "privateAssets": "none"
+          },
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.311/PortableRuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

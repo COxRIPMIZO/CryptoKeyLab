@@ -1,0 +1,186 @@
+/* Animated dark gradient background with smooth transitions */
+.hero-section-dark {
+    height: 100vh;
+    background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #1a1a2e, #3a1f4a, #5a1f3a);
+    background-size: 600% 600%;
+    animation: gradientShift 20s ease infinite;
+    position: relative;
+    overflow: hidden;
+}
+
+    /* Optional subtle pattern overlay */
+    .hero-section-dark::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 200%;
+        height: 200%;
+        background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+        background-size: 50px 50px;
+        opacity: 0.15;
+        animation: movePattern 80s linear infinite;
+        z-index: 0;
+    }
+
+    .hero-section-dark > * {
+        position: relative;
+        z-index: 1;
+    }
+
+
+/* Glassmorphism card */
+/*.glass-card {
+    background: rgba(40, 40, 55, 0.75);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #f1f1f1;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+}*/
+
+/* Glassmorphism card tuned for dark animated gradient */
+.glass-card {
+    background: linear-gradient( 135deg, rgba(20, 20, 35, 0.75), rgba(40, 20, 60, 0.65) );
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 1rem;
+    color: #f8f9fa; /* bright text */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(102, 16, 242, 0.3); /* subtle purple glow */
+    max-width: 800px;
+    margin: auto;
+}
+
+/* Neon button */
+.btn-neon {
+    background: linear-gradient(90deg, #0dcaf0, #6610f2);
+    border: none;
+    color: #fff;
+    text-shadow: 0 0 5px #000;
+    transition: all 0.3s ease;
+}
+
+    .btn-neon:hover {
+        box-shadow: 0 0 20px #0dcaf0, 0 0 40px #6610f2;
+        transform: scale(1.05);
+    }
+
+/* Animations */
+.animate-fade-in {
+    animation: fadeIn 1s ease forwards;
+}
+
+.animate-fade-in-delay {
+    opacity: 0;
+    animation: fadeIn 1s ease forwards 0.5s;
+}
+
+.animate-bounce {
+    animation: bounce 2s infinite;
+}
+
+.animate-up {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 1s ease forwards;
+}
+
+    .animate-up:nth-child(2) {
+        animation-delay: 0.3s;
+    }
+
+    .animate-up:nth-child(3) {
+        animation-delay: 0.6s;
+    }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Gradient animation */
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Pattern animation */
+@keyframes movePattern {
+    from {
+        transform: translate(0, 0);
+    }
+
+    to {
+        transform: translate(-200px, -200px);
+    }
+}
+
+
+/* About & Contact page tweaks */
+.glass-card h1 {
+    text-shadow: 0 0 12px rgba(13, 202, 240, 0.6), 0 0 24px rgba(102, 16, 242, 0.4);
+}
+
+form .form-control {
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+form .form-control:focus {
+    border-color: #0dcaf0;
+    box-shadow: 0 0 10px rgba(13, 202, 240, 0.5);
+}
+
+
+/* contact validation styling */
+
+.validation-message {
+    color: red;
+    font-weight: bold;
+}
+
+input.input-validation-error,
+textarea.input-validation-error {
+    border: 1px solid red;
+    background-color: #ffe6e6;
+}
+
+

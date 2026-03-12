@@ -1,0 +1,348 @@
+﻿@page "/Comp_AsymKeyGen"
+@page "/Comp_EncData"
+@page "/AsymmetricKeyGeneration"
+@page "/KeyGeneration"
+@page "/Asymmetric_Cryptography/KeyGeneration"
+@page "/Asymmetric_Cryptography/AsymmetricKeyGeneration"
+
+@layout MainLayout
+
+@rendermode InteractiveServer
+
+@using static THE_PRINCE_CRYPTOGRAPHY.Asymmetric_CryptoGraphy
+@inject FileExportService fileExportService
+@inject IJSRuntime jsRuntime
+
+<MetaTags Title="Asymmetric Key Generation - The Prince Cryptography"
+Description="Generate secure public and private key pairs using asymmetric cryptography with The Prince Cryptography."
+Keywords="asymmetric key generation, public key, private key, RSA keys, cryptography tools"
+ImageUrl="https://yourdomain.com/images/asymmetric-key-generation-preview.png"
+Url="https://yourdomain.com/AsymmetricKeyGeneration" />
+
+
+<div class="container-fluid py-5">
+	<div class="container">
+		<h4 class="text-secondary">Asymmetric Cryptography - Public and Private Key Generation</h4>
+	</div>
+	<div class="container-fluid ">
+		<div class="col-md-8">
+			<label for="Algos" class="form-label">Select Algorithm</label>
+			<select id="Algos" class="form-select">
+				<option selected>RSA</option>
+			</select>
+			<div class="d-flex justify-content-center">
+				<button type="button" class="col-md-5 btn btn-outline-primary mt-2" @onclick="GenerateKeys">Generate Keys</button>
+			</div>
+			@* add loader *@
+			<div class="container">
+				<div class="d-flex justify-content-center">
+					<LoadingIndicator IsLoading="@isDisplayProgressbar" Message="Generating your keys..." Style="" />
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="container-fluid">
+	<div class="container mt-2">
+		<h5 class="container">Your keys here : </h5>
+	</div>
+	<div class="row rows-cols-2">
+		<div class="col">
+			<div class="form-floating">
+				<textarea id="publicKey" @bind="@publicKeyTextArea" class="form-control" style="height: 300px" disabled="@isEnabled" placeholder="public key"></textarea>
+				<label for="publicKey">Public Key</label>
+				<div class="d-flex justify-content-center mt-2">
+					@if (isKeyGenerated)
+					{
+						<button type="button" id="copyPublicKey" @onclick="() => SetTextAreaValues(KeyType.Public)" class="btn btn-outline-dark col-md-7">Copy Public Key</button>
+					}
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<div class="form-floating">
+				<textarea id="PrivateKey" @bind="@privateKeyTextArea" placeholder="Private Key" disabled="@isEnabled" class="form-control" style="height: 300px"></textarea>
+				<label for="PrivateKey">Private Key</label>
+				<div class="d-flex justify-content-center mt-2">
+					@if (isKeyGenerated)
+					{
+						<button id="copyPrivateKey" type="button" @onclick="() => SetTextAreaValues(KeyType.Private)" class="col-md-7 btn btn-outline-dark">Copy Private Key</button>
+					}
+				</div>
+			</div>
+		</div>
+
+		<!-- Password row -->
+		<div class="row align-items-center mt-5">
+			<div class="col-auto">
+				<h5 class="text-dark mb-0">PrivateKey Password</h5>
+			</div>
+
+			<div class="col">
+				<div class="form-floating">
+					<textarea id="KeyPassword" @bind="@privateKeyPass"
+					placeholder="Private Key Pass" disabled="@isEnabled"
+					class="form-control"></textarea>
+					<label for="KeyPassword">Private Key Password</label>
+				</div>
+			</div>
+
+			@if (isKeyGenerated)
+			{
+				<div class="col-auto">
+					<button type="button" id="copyPrivateKeyPass" @onclick="() => SetTextAreaValues(KeyType.PrivateKeyPass)"
+					class="btn btn-outline-dark">
+						Copy PasswordKey Password
+					</button>
+				</div>
+			}
+
+		</div>
+	</div>
+
+
+	@if(isKeyGenerated)
+	{
+		<div class="row mt-5">
+			<div class="col d-flex align-items-center">
+				<h5 class="mb-0 me-3 text-secondary">Export your keys:</h5>
+
+				<div class="btn-group">
+					<!-- Main Export button -->
+					<button type="button" class="btn btn-outline-success px-5 fw-bold "
+							style="min-width:180px;">
+						Export
+					</button>
+
+					<!-- Dropdown toggle -->
+					<button type="button" class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
+							data-bs-toggle="dropdown" aria-expanded="false"
+							style="width:50px;">
+						<span class="visually-hidden">Toggle Dropdown</span>
+					</button>
+
+					<!-- Dropdown menu -->
+					<ul class="dropdown-menu">
+						<li><a class="dropdown-item" @onclick="() => ExportFile(ExportType.Text)">📄 Export as TXT</a></li>
+						<li><a class="dropdown-item" @onclick="() => ExportFile(ExportType.Json)">🗂 Export as JSON</a></li>
+						<li><a class="dropdown-item" @onclick="() => ExportFile(ExportType.Pem)">🔑 Export as PEM</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	}
+	
+</div>
+
+@* display based on content copy *@
+@if (isDataCopied)
+{
+	<div class="toast-container position-sticky bottom-0 start-100 p-3">
+		<div class="toast text-bg-success border-0 fade show" role="alert" aria-live="assertive" aria-atomic="true">
+			<div class="d-flex">
+				<div class="toast-body">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-info-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+						<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+					</svg>
+					@toastMsg
+				</div>
+				<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="close"></button>
+			</div>
+		</div>
+	</div>
+}
+
+
+@code {
+
+	//hold the generated key pair
+	KeyPair KeyPair = null;
+
+	//textarea values setter after key generation
+	string publicKeyTextArea = string.Empty;
+	string privateKeyTextArea = string.Empty;
+	string privateKeyPass = string.Empty;
+	bool isEnabled = true;
+	bool isKeyGenerated = false;
+	bool isDisplayProgressbar = false;
+	bool isDataCopied = false;
+	string toastMsg = string.Empty;
+
+	//method to generate public and private keys
+	private async Task GenerateKeys()
+	{
+		isDisplayProgressbar = true;
+
+		KeyPair = await Task.Run(() => Asymmetric_CryptoGraphy.GenerateKeys());
+
+		isDisplayProgressbar = false;
+
+		//check if keypair is not null
+		if (KeyPair is null) return;
+
+		//isEnabled = true;
+		isKeyGenerated = true;
+
+		//set the values of textareas
+		publicKeyTextArea = KeyPair.PublicKey;
+		privateKeyTextArea = KeyPair.PrivateKey;
+		privateKeyPass = KeyPair.PrivateKeyPass;
+
+		await ShowHideToastMessage("Key Generated Successfully.");
+	}
+
+	private async Task SetTextAreaValues(KeyType typeOfkey)
+	{
+		if (KeyPair != null)
+		{
+			await jsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", typeOfkey switch
+			{
+				KeyType.Private => KeyPair.PrivateKey,
+				KeyType.Public => KeyPair.PublicKey,
+				KeyType.PrivateKeyPass => KeyPair.PrivateKeyPass,
+				_ => string.Empty
+			});
+
+			await ShowHideToast(typeOfkey);
+		}
+	}
+
+	private async Task ShowHideToast(KeyType typeOfkey)
+	{
+		toastMsg = typeOfkey switch
+		{
+			KeyType.Public => $"Public Key copy successfully!",
+			KeyType.Private => $"Private Key copy successfully!",
+			KeyType.PrivateKeyPass => $"PrivateKey password copy successfully!",
+			_ => string.Empty
+		};
+
+		//check for balnk toast message
+		if (string.IsNullOrWhiteSpace(toastMsg))
+			return;
+
+		//show toast notification
+		isDataCopied = true;
+
+		StateHasChanged();
+
+		//dismiss
+		await Task.Delay(5000);
+		isDataCopied = false;
+
+		StateHasChanged();
+	}
+
+	#region
+
+	private async Task ShowHideToastMessage(string message)
+	{
+		toastMsg = message;
+		//show toast notification
+		isDataCopied = true;
+		StateHasChanged();
+
+		//dismiss
+		await Task.Delay(5000);
+		isDataCopied = false;
+
+		StateHasChanged();
+	}
+
+	#endregion
+
+	#region code block for file export
+
+	private void ExportFile(ExportType exportType)
+	{
+		switch (exportType)
+		{
+			case ExportType.Text:
+				TextFileExport();
+				break;
+			case ExportType.Json:
+				JsonFileExport();
+				break;
+			case ExportType.Pem:
+				PemFileExport();
+				break;
+		}
+	}
+
+	//text file export
+	private bool TextFileExport()
+	{
+		if (KeyPair is null) return false;
+
+		var content = $"Public Key:\n{KeyPair.PublicKey}\n\nPrivate Key:\n{KeyPair.PrivateKey}\n\nPrivate Key Password:\n{KeyPair.PrivateKeyPass}";
+
+		//fileExportService.ExportText("AsymmetricKeys.txt", content);
+
+		var bytes = Encoding.UTF8.GetBytes(content);
+		var Base64Content = Convert.ToBase64String(bytes);
+
+		jsRuntime.InvokeVoidAsync("DownloadFile", "AsymmetricKeys.txt", "text/plain", Base64Content);
+
+		return true;
+	}
+
+	private bool JsonFileExport()
+	{
+		if (KeyPair is null) return false;
+		var keyData = new
+		{
+			PublicKey = KeyPair.PublicKey,
+			PrivateKey = KeyPair.PrivateKey,
+			PrivateKeyPass = KeyPair.PrivateKeyPass
+		};
+		var jsonContent = System.Text.Json.JsonSerializer.Serialize(keyData, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
+
+		//fileExportService.ExportText("AsymmetricKeys.json", "application/json");
+
+		var bytes = Encoding.UTF8.GetBytes(jsonContent);
+		var Base64Content = Convert.ToBase64String(bytes);
+
+		jsRuntime.InvokeVoidAsync("DownloadFile", "AsymmetricKeys.json", "application/json", Base64Content);
+
+		return true;
+	}
+
+	private bool PemFileExport()
+	{
+		if (KeyPair is null) return false;
+
+		StringBuilder objStringBuilder = new StringBuilder();
+
+		//appending all keys in pem format
+		objStringBuilder.AppendLine("-----BEGIN PUBLIC KEY-----");
+		objStringBuilder.AppendLine(KeyPair.PublicKey);
+
+		//blank line between keys
+		objStringBuilder.AppendLine();
+
+		//append private key
+		objStringBuilder.AppendLine("-----BEGIN PRIVATE KEY-----");
+		objStringBuilder.AppendLine(KeyPair.PrivateKey);
+
+		//blank line between keys
+		objStringBuilder.AppendLine();
+
+		//append private key password
+		objStringBuilder.AppendLine("-----BEGIN PRIVATE KEY PASSWORD-----");
+		objStringBuilder.AppendLine(KeyPair.PrivateKeyPass);
+
+		string PemContent = objStringBuilder.ToString();
+
+		var bytes = Encoding.UTF8.GetBytes(PemContent);
+		var base64Public = Convert.ToBase64String(bytes);
+
+		//to be continued
+		jsRuntime.InvokeVoidAsync("DownloadFile", "AsymmetricKeys.pem", "application/x-pem-file", base64Public);
+
+		return true;
+	}
+
+	#endregion
+}

@@ -1,0 +1,44 @@
+﻿@code {
+	[Parameter]
+	public bool IsLoading { get; set; }
+
+	[Parameter]
+	public string? Message { get; set; }
+
+	[Parameter]
+	public string? Style { get; set; }
+
+	[Parameter]
+	public int Width { get; set; } = 500;
+}
+
+@if (IsLoading)
+{
+	@if (Style.Equals("bar", StringComparison.OrdinalIgnoreCase))
+	{
+		<div class="d-flex flex-column align-items-center">
+			<div class="progress my-2" style="width:@($"{Width}px")">
+				<div class="progress-bar progress-bar-striped progress-bar-animated w-100"
+					 role="progressbar"></div>
+			</div>
+
+			@if (!string.IsNullOrWhiteSpace(Message))
+			{
+				<div class="small text-muted mt-1">@Message</div>
+			}
+		</div>
+
+	}
+	else
+	{
+		<div class="d-flex align-items-center my-2">
+			<div class="spinner-border text-success" role="status" style="width: 1.5rem; height: 1.5rem;">
+				<span class="visually-hidden">Loading...</span>
+			</div>
+			@if (!string.IsNullOrWhiteSpace(Message))
+			{
+				<span class="ms-2">@Message</span>
+			}
+		</div>
+	}
+}

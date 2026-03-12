@@ -1,0 +1,137 @@
+﻿@page "/contact"
+@layout MainLayout
+@inject HttpClient httpClient
+@inject Microsoft.Extensions.Options.IOptions<AppSettings> appSettings
+@rendermode InteractiveServer
+
+@* add Metatag *@
+<MetaTags Title="Contact Us - CryptoKeyLab" Description="Get in touch with the CryptoKeyLab team for support, feedback, or collaboration opportunities."
+		  Keywords="cryptography, contact, support, CryptoKeyLab" ImageUrl="https://yourdomain.com/images/cryptokeylab-preview.png"
+		  Url="https://yourdomain.com/contact" />
+
+<div class="hero-section-dark d-flex flex-column justify-content-center align-items-center text-center text-light py-5">
+	<div class="glass-card p-5 rounded-4 shadow-lg animate-fade-in" style="max-width: 700px;">
+		<h1 class="display-4 fw-bold mb-3">📬 Contact Us</h1>
+		<p class="lead">We’d love to hear from you. Whether it’s feedback, support, or collaboration — reach out!</p>
+		<hr class="my-4 border-light opacity-50" />
+
+		<EditForm Model="@userFeedBack" OnValidSubmit="HandleValidSubmit" FormName="test">
+			<DataAnnotationsValidator />
+			<ValidationSummary />
+			<div class="mb-3">
+				<label class="form-label text-light">Name</label>
+				<InputText @bind-Value="userFeedBack.Name" class="form-control bg-dark text-light border-secondary" placeholder="Enter your name" />
+			</div>
+			<div class="mb-3">
+				<label class="form-label text-light">Email</label>
+				<InputText @bind-Value="userFeedBack.Email" class="form-control bg-dark text-light border-secondary" placeholder="Enter your email" />
+			</div>
+			<div class="mb-3">
+				<label class="form-label text-light">Message</label>
+				<InputTextArea rows="4" @bind-Value="userFeedBack.Message" class="form-control bg-dark text-light border-secondary" placeholder="Type your message"></InputTextArea>
+			</div>
+			<button type="submit" class="btn btn-neon px-5">Send Message</button>
+
+			<div class="container">
+				<div class="d-flex justify-content-center">
+					<LoadingIndicator IsLoading="@isDisplayProgressbar" Message="Submitting your feedback..." Style="" />
+				</div>
+			</div>
+		</EditForm>
+
+		<div class="mt-4">
+			<p class="mb-1">Or connect with us directly:</p>
+			<a href="mailto:youremail@example.com" class="text-info mx-2"><i class="bi bi-envelope fs-4"></i></a>
+			<a href="https://github.com/YourProfile" target="_blank" class="text-light mx-2"><i class="bi bi-github fs-4"></i></a>
+			<a href="https://linkedin.com/in/YourProfile" target="_blank" class="text-primary mx-2"><i class="bi bi-linkedin fs-4"></i></a>
+			<a href="https://twitter.com/YourProfile" target="_blank" class="text-light mx-2"><i class="bi bi-twitter-x fs-4"></i></a>
+		</div>
+
+	</div>
+</div>
+
+@if (isMsgDisply)
+{
+
+	var toastBgColor = isResponseSuccess ? "text-bg-success" : "text-bg-danger";
+	var toastIcon = isResponseSuccess ? "M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"
+					: "M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2";
+
+	<div class="toast-container position-sticky start-100 bottom-0 p-3">
+
+		<div class="toast @toastBgColor border-0 fade show" role="alert" aria-label="assertive" aria-atomic="true">
+			<div class="d-flex">
+				<div class="toast-body">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+						<path d="@toastIcon" />
+					</svg>
+					@responseMsg
+				</div>
+				<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="close"></button>
+			</div>
+		</div>
+
+	</div>
+}
+
+<!-- Footer -->
+<Footer></Footer>
+
+@code {
+
+	FeedBackModel userFeedBack = new FeedBackModel();
+
+	bool isMsgDisply = false;
+	bool isDisplayProgressbar = false;
+	string? responseMsg = string.Empty;
+	bool isResponseSuccess = false;
+
+	private async Task HandleValidSubmit()
+	{
+		// // Here you would typically send the feedback to your server or an email service
+		isDisplayProgressbar = true;
+
+		var response = new HttpResponseMessage();
+		try
+		{
+			response = await httpClient.PostAsJsonAsync($"{appSettings.Value.BaseApiUrl}UserFeedBack/SubmitFeedback", userFeedBack);
+			isResponseSuccess = true;
+		}
+		catch (Exception)
+		{
+			response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			isResponseSuccess = false;
+		}
+
+		isDisplayProgressbar = false;
+
+		// Show toast notification based on response
+		await ShowHideToast(response);
+
+	}
+
+	private async Task ShowHideToast(HttpResponseMessage httpResponseMessage)
+	{
+		if (httpResponseMessage.IsSuccessStatusCode)
+		{
+			responseMsg = $"Feedback submitted successfully.";
+
+			// Optionally, clear the form after submission
+			userFeedBack = new FeedBackModel();
+
+		}
+		else
+			responseMsg = $"Some error occured : {httpResponseMessage.StatusCode}";
+
+		//show toast notification
+		isMsgDisply = true;
+
+		StateHasChanged();
+
+		//dismiss
+		await Task.Delay(5000);
+		isMsgDisply = false;
+
+		//StateHasChanged();
+	}
+}
