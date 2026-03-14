@@ -1,6 +1,7 @@
+using System.Threading.RateLimiting;
 using CryptoKeyLab.Components;
-using Models;
 using CryptoKeyLab.Services;
+using Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,33 @@ builder.Services.AddHttpClient();
 
 //injecting File Export Service
 builder.Services.AddScoped<FileExportService>();
+
+//add rate limiter service with a limit of 100 requests per hour
+//builder.Services.AddRateLimiter(options => 
+//{
+//    //REJECT STATUS CODE 429 TOO MANY REQUESTS
+//    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+//    //create a policy that limits to 3 requests per minute per client IP
+//    options.AddPolicy("RsaGenRateLimit", context => 
+//    {
+//        var ip = context.Connection.RemoteIpAddress?.ToString() ?? "Unknown";
+
+//        return RateLimitPartition.GetFixedWindowLimiter(ip, _ => new FixedWindowRateLimiterOptions
+//        {
+//            PermitLimit = 3, //allow 3 requests
+//            Window = TimeSpan.FromMinutes(1), //per minute
+//            QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+//            QueueLimit = 0 //no queuing, reject immediately when limit is exceeded
+//        });
+//    });
+//});
+
+//for allowed to read limits
+builder.Services.AddHttpContextAccessor();
+
+//inject the services
+builder.Services.AddSingleton(new CryptoKeyLab.Services.RateLimiter(5, TimeSpan.FromMinutes(30)));
 
 var app = builder.Build();
 

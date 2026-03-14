@@ -12,6 +12,8 @@
 @using static THE_PRINCE_CRYPTOGRAPHY.Asymmetric_CryptoGraphy
 @inject FileExportService fileExportService
 @inject IJSRuntime jsRuntime
+@inject RateLimiter ReteLimitService
+@inject IHttpContextAccessor HttpContextAccessorService
 
 <MetaTags Title="Asymmetric Key Generation - The Prince Cryptography"
 Description="Generate secure public and private key pairs using asymmetric cryptography with The Prince Cryptography."
@@ -148,12 +150,34 @@ Url="https://yourdomain.com/AsymmetricKeyGeneration" />
 					</svg>
 					@toastMsg
 				</div>
-				<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="close"></button>
+				<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="close" @onclick="ManuallyCloseRateLimitToast"></button>
 			</div>
 		</div>
 	</div>
 }
 
+@if (IsRateLimitEx)
+{
+
+	var toastBgColor = "text-bg-danger";
+	var toastIcon = "M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2";
+
+	<div class="toast-container position-sticky start-100 bottom-0 p-3">
+
+		<div class="toast @toastBgColor border-0 fade show" role="alert" aria-label="assertive" aria-atomic="true">
+			<div class="d-flex">
+				<div class="toast-body">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+						<path d="@toastIcon" />
+					</svg>
+					@strRateLimitAlertMsg
+				</div>
+				<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="close" @onclick ="ManuallyCloseRateLimitToast"></button>
+			</div>
+		</div>
+
+	</div>
+}
 
 @code {
 
@@ -170,9 +194,45 @@ Url="https://yourdomain.com/AsymmetricKeyGeneration" />
 	bool isDataCopied = false;
 	string toastMsg = string.Empty;
 
+	//HOLD RHE CLIENT IP ADDRESS
+	string? strClientIp = "Unknown";
+
+	//realted to retelimiter
+	bool isKeyGenrationStop = false;
+	string strRateLimitAlertMsg = string.Empty;
+	bool IsRateLimitEx = false;
+
+	//cancellation token for rate limit toast
+	CancellationTokenSource? _toastCts;
+
+	//over ride the onintilize function
+	protected override void OnInitialized()
+	{
+		// Grab the IP address when the page first loads
+		var userIP = HttpContextAccessorService.HttpContext?.Connection?.RemoteIpAddress?.ToString();
+
+		if (!string.IsNullOrWhiteSpace(userIP))
+			strClientIp = userIP;
+		else
+		{
+			// Fallback if IP is hidden (e.g., behind a proxy or strict websocket)
+			// You can also use a Username here if they are logged in!
+			strClientIp = "UserSession_" + Guid.NewGuid().ToString();
+		}
+	}
+
 	//method to generate public and private keys
 	private async Task GenerateKeys()
 	{
+		//check for reate limit
+		var IsRateLimitEx = IsRateLimitExceed(strClientIp);
+
+		if (IsRateLimitEx)
+		{
+			await ShowHideToastMessageRateLimit();
+			return;
+		}
+
 		isDisplayProgressbar = true;
 
 		KeyPair = await Task.Run(() => Asymmetric_CryptoGraphy.GenerateKeys());
@@ -191,6 +251,22 @@ Url="https://yourdomain.com/AsymmetricKeyGeneration" />
 		privateKeyPass = KeyPair.PrivateKeyPass;
 
 		await ShowHideToastMessage("Key Generated Successfully.");
+	}
+
+	//private function for check is thatr allowed or not '
+	private bool IsRateLimitExceed(string StrIP)
+	{
+		bool IsGenAllowed = ReteLimitService.IsRequestAllowed(StrIP);
+
+		if (!IsGenAllowed)
+		{
+			// block the user
+			isKeyGenrationStop = true;
+			strRateLimitAlertMsg = "Rate limit exceeded! You have been blocked. Please wait 30 minutes before trying again.";
+			return true	;
+		}
+
+		return false;
 	}
 
 	private async Task SetTextAreaValues(KeyType typeOfkey)
@@ -239,16 +315,96 @@ Url="https://yourdomain.com/AsymmetricKeyGeneration" />
 
 	private async Task ShowHideToastMessage(string message)
 	{
+		// 1. Cancel the previous timer, but DO NOT Dispose it here!
+		_toastCts?.Cancel();
+
+		//2.create brand new cancellation token source
+		_toastCts = new CancellationTokenSource();
+		var token = _toastCts.Token;
+
 		toastMsg = message;
 		//show toast notification
 		isDataCopied = true;
 		StateHasChanged();
 
-		//dismiss
-		await Task.Delay(5000);
+		try
+		{
+
+			//dismiss
+			await Task.Delay(5000,token);
+			isDataCopied = false;
+
+			StateHasChanged();
+		}
+		catch (TaskCanceledException)
+		{
+			// If the user clicks Generate again or closes it early,
+			// the Task.Delay throws this exception. We just ignore it
+			// because the NEW click will handle the UI state.
+		}
+	}
+
+	private async Task ShowHideToastMessageRateLimit()
+	{
+		// //1.check for cancellation token source
+		// if(_toastCts != null)
+		// {
+		// 	_toastCts.Cancel();
+		// 	_toastCts.Dispose();
+		// }
+
+		// 1. Cancel the previous timer, but DO NOT Dispose it here!
+		_toastCts?.Cancel();
+
+		//2.create brand new cancellation token source
+		_toastCts = new CancellationTokenSource();
+		var token = _toastCts.Token;
+
+		//show toast notification
+		IsRateLimitEx = true;
+		StateHasChanged();
+
+		try
+		{
+			// 4. Wait 5 seconds, but pass the token so we can interrupt it!
+			await Task.Delay(5000, token);
+
+			// 5. If we reach here, it means 5 seconds passed without interruption
+			IsRateLimitEx = false;
+			StateHasChanged();
+		}
+		catch (TaskCanceledException)
+		{
+			// If the user clicks Generate again or closes it early,
+			// the Task.Delay throws this exception. We just ignore it
+			// because the NEW click will handle the UI state.
+		}
+	}
+
+
+	//function for manually handle close and cancellation token when user click on close button of toast
+	private void ManuallyCloseRateLimitToast()
+	{
+		IsRateLimitEx = false;
 		isDataCopied = false;
 
+		// if (_toastCts != null)
+		// {
+		// 	_toastCts.Cancel();
+		// 	_toastCts.Dispose();
+		// }
+
+		// Just Cancel, don't dispose!
+		_toastCts?.Cancel();
+
 		StateHasChanged();
+	}
+
+	// 5. Clean up memory safely when the user leaves this page
+	public void Dispose()
+	{
+		_toastCts?.Cancel();
+		_toastCts?.Dispose();
 	}
 
 	#endregion

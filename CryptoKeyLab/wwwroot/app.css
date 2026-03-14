@@ -184,3 +184,44 @@ textarea.input-validation-error {
 }
 
 
+
+
+
+
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 90vh;
+}
+
+.content-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.row.flex-grow-1 {
+    flex: 1;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+textarea.form-control.flex-grow-1 {
+    min-height: 150px; /* optional baseline */
+    resize: vertical; /* allow manual resize */
+}
