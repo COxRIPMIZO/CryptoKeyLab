@@ -41,7 +41,7 @@ Most importantly, CryptoKeyLab is designed with a **strict stateless architectur
 *   Visual Studio 2022 or VS Code with C# Dev Kit.
 
 #### Installation & Run
-1. **Clone the repository:**
+1.**Clone the repository:**
    git clone https://github.com/COxRIPMIZO/CryptoKeyLab.git
 
 2.**Navigate to the project directory:**
