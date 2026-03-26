@@ -1,0 +1,6 @@
+@CryptoKeyLab.API_HostAddress = http://localhost:5072
+
+GET {{CryptoKeyLab.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
