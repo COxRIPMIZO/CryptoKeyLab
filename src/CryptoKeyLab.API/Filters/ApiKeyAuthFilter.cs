@@ -44,7 +44,7 @@ namespace CryptoKeyLab.API.Filters
             if (!keyValidationResult.IsValid)
             {
                 //Return result based on the reason of invalidity of rete limit
-                if (keyValidationResult.IsReateLimitExceeded)
+                if (keyValidationResult.IsRateLimitExceeded)
                 {
                     context.Result = new ObjectResult(new { Message = keyValidationResult.Message }) { StatusCode = StatusCodes.Status429TooManyRequests};
                     return;

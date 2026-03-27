@@ -1,4 +1,5 @@
 using CryptoKeyLab.API.Filters;
+using CryptoKeyLab.API.Middleware.Exceptions;
 using CryptoKeyLab.Core.Services;
 using CryptoKeyLab.Domain.Interfaces;
 using CryptoKeyLab.Infrastructure.Repositories;
@@ -31,7 +32,17 @@ builder.Services.AddScoped<ApiKeyAuthFilter>();
 
 #endregion
 
+#region Register the middlewares
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
+#endregion
+
 var app = builder.Build();
+
+//Add global exception handling , as first middleware of this pipeline
+app.UseExceptionHandler();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
