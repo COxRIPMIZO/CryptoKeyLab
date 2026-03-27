@@ -1,3 +1,4 @@
+using CryptoKeyLab.API.Filters;
 using CryptoKeyLab.Core.Services;
 using CryptoKeyLab.Domain.Interfaces;
 using CryptoKeyLab.Infrastructure.Repositories;
@@ -14,10 +15,19 @@ builder.Services.AddOpenApi();
 
 #region Working and registering core services
 
+//injecting Key Generation Service and Key Validation Service into the DI container so they can be used in the controllers and filters
+
+// 1. Core Services
 builder.Services.AddScoped<IApiKeyService, ApiKeyService>();
 
-//Register the repository and infra service of dapper
+//2. Repository
 builder.Services.AddScoped<IApiKeyRepository, ApiKeyRepository>();
+
+//3. Validation Service
+builder.Services.AddScoped<IApiKeyValidationService, ApiKeyValidationService>();
+
+//4.Filter(The gatekepper)
+builder.Services.AddScoped<ApiKeyAuthFilter>();
 
 #endregion
 

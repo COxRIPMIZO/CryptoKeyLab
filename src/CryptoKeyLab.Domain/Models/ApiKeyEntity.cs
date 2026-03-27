@@ -19,6 +19,8 @@ namespace CryptoKeyLab.Domain.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime ExpiresAt { get; set; }
 
+        public int TotalUsageCount { get; set; } = 0; // Track total usage count for analytics or rate limiting purposes
+
         public bool IsActive => DateTime.UtcNow < ExpiresAt;
         public int RateLimitPerMinute { get; set; } = 30; // Default rate limit
     }
