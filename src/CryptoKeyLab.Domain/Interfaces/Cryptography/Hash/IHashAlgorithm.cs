@@ -5,13 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CryptoKeyLab.Domain.Interfaces.Cryptography
+namespace CryptoKeyLab.Domain.Interfaces.Cryptography.Hash
 {
     public interface IHashAlgorithm
     {
         string? Name { get; }
 
         /// Results
-        CryptoResult ComputeHash(string input);
+        /// change for multiple input parameters
+        //CryptoResult ComputeHash(string input);
+
+        CryptoResult ComputeHash(HashOptions hashOptions);
     }
 }

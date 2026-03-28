@@ -3,8 +3,10 @@ using CryptoKeyLab.API.Middleware.Exceptions;
 using CryptoKeyLab.Core.Factories;
 using CryptoKeyLab.Core.Services;
 using CryptoKeyLab.Domain.Interfaces;
+using CryptoKeyLab.Domain.Interfaces.Cryptography.Hash;
 using CryptoKeyLab.Domain.Interfaces.Factories;
 using CryptoKeyLab.Infrastructure.Repositories;
+using CryptoKeyLab.Infrastructure.Repositories.Cryptography.HashMetaData;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,7 +35,10 @@ builder.Services.AddScoped<IApiKeyValidationService, ApiKeyValidationService>();
 builder.Services.AddScoped<ApiKeyAuthFilter>();
 
 //5. Hasing Factory and Algorithms
-builder.Services.AddSingleton<IHashFactory, HashFactory>();
+builder.Services.AddScoped<IHashFactory, HashFactory>();
+
+//6. Hash Metadata Repository
+builder.Services.AddScoped<IHashMetadataRepository, HashMetadataRepository>();
 
 #endregion
 
