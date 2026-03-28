@@ -1,7 +1,9 @@
 using CryptoKeyLab.API.Filters;
 using CryptoKeyLab.API.Middleware.Exceptions;
+using CryptoKeyLab.Core.Factories;
 using CryptoKeyLab.Core.Services;
 using CryptoKeyLab.Domain.Interfaces;
+using CryptoKeyLab.Domain.Interfaces.Factories;
 using CryptoKeyLab.Infrastructure.Repositories;
 using Scalar.AspNetCore;
 
@@ -29,6 +31,9 @@ builder.Services.AddScoped<IApiKeyValidationService, ApiKeyValidationService>();
 
 //4.Filter(The gatekepper)
 builder.Services.AddScoped<ApiKeyAuthFilter>();
+
+//5. Hasing Factory and Algorithms
+builder.Services.AddSingleton<IHashFactory, HashFactory>();
 
 #endregion
 
