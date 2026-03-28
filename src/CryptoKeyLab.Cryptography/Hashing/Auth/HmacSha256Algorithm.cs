@@ -29,7 +29,7 @@ namespace CryptoKeyLab.Cryptography.Hashing.Auth
             var hashBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(hashOptions.Input));
             sw.Stop();
 
-            return new CryptoResult(Convert.ToHexString(hashBytes).ToLower(), sw.ElapsedMilliseconds);
+            return new CryptoResult(Convert.ToHexString(hashBytes).ToLower(), sw.Elapsed.TotalMilliseconds);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace CryptoKeyLab.API.Controllers.TestControllers
         }
 
         // Endpoint 2: Hash a sample input using the specified algorithm [HttpPost("hash-input")]
-        [HttpPost("hash")]
+        [HttpPost("hash-check")]
         public async Task<IActionResult> ComputeHash([FromQuery] string hashAlgorith,[FromBody]HashOptions hashOptions)
         {
             try

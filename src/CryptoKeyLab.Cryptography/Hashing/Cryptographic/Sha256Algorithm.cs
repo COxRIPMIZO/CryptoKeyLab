@@ -36,7 +36,7 @@ namespace CryptoKeyLab.Cryptography.Hashing.Cryptographic
             sw.Stop();
 
             //step 7. Create and return the CryptoResult
-            return new CryptoResult(hashString, sw.ElapsedMilliseconds);
+            return new CryptoResult(hashString, sw.Elapsed.TotalMilliseconds);
         }
 
         //public CryptoResult ComputeHash(string input)
@@ -60,7 +60,7 @@ namespace CryptoKeyLab.Cryptography.Hashing.Cryptographic
         //    sw.Stop();
 
         //    //step 7. Create and return the CryptoResult
-        //    return new CryptoResult(hashString, sw.ElapsedMilliseconds);
+        //    return new CryptoResult(hashString, sw.Elapsed.TotalMilliseconds);
         //}
 
 

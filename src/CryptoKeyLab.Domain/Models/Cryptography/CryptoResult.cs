@@ -9,6 +9,7 @@ namespace CryptoKeyLab.Domain.Models.Cryptography
     public record CryptoResult
     (
         string? OutPut,
-        long TimeTakenMilliSeconds
+        //long TimeTakenMilliSeconds
+        double TimeTakenMilliSeconds
     );
 }

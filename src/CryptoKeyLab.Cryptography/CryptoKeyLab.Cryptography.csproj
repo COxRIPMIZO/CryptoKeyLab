@@ -10,7 +10,14 @@
     <Folder Include="Asymmetric\" />
     <Folder Include="Encoding\" />
     <Folder Include="Generators\" />
+    <Folder Include="Hashing\Deprecated\" />
+    <Folder Include="Hashing\Lightweight\" />
     <Folder Include="Symmetric\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blake3" Version="2.2.1" />
+    <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.2" />
   </ItemGroup>
 
   <ItemGroup>
