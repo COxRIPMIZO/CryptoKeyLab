@@ -1,4 +1,8 @@
-﻿using CryptoKeyLab.Domain.Interfaces;
+﻿using CryptoKeyLab.Core.Services.InternalCode.ApiKeyHashing;
+using CryptoKeyLab.Cryptography.Hashing.Cryptographic;
+using CryptoKeyLab.Domain.Interfaces;
+using CryptoKeyLab.Domain.Interfaces.Cryptography.Hash;
+using CryptoKeyLab.Domain.Interfaces.SystemInternal;
 using CryptoKeyLab.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -21,11 +25,13 @@ namespace CryptoKeyLab.Core.Services
         private const int KeyExpirationHours = 24;
 
         private readonly IApiKeyRepository _apiKeyRepository;
+        private readonly ISystemHashProvider _hashAlgorithm;
 
         //DI Inejectoion of repository to save the generated key details into database
-        public ApiKeyService(IApiKeyRepository keyRepository)
+        public ApiKeyService(IApiKeyRepository keyRepository,ISystemHashProvider hashAlgorithm)
         {
             _apiKeyRepository = keyRepository;
+            _hashAlgorithm = hashAlgorithm;
         }
 
         public async Task<TemporarykeyResponse> GenerateTemporaryKeyAsync()
@@ -57,8 +63,13 @@ namespace CryptoKeyLab.Core.Services
                 Id = Guid.NewGuid(),
                 keyPrefix = KeyPrefix,
                 CreatedAt = DateTime.UtcNow,
+
                 // In a real DB flow, you hash 'fullPlainTextKey' with SHA256 and store the hash here.
-                KeyHash = "HASHED_VALUE_FOR_DB",
+                //================================================
+                //added on 01-04-2026 
+                //use for security purpose we are hashing the key before storing it in database, so even if database is compromised the attacker will not get the actual key, they will only get the hash which is useless without the original key
+                //================================================
+                KeyHash = _hashAlgorithm.ComputeHash(fullPlainTextKey),//"HASHED_VALUE_FOR_DB",
 
                 ExpiresAt = DateTime.UtcNow.AddHours(KeyExpirationHours),
                 RateLimitPerMinute = 30 // Strict limit for free anonymous users

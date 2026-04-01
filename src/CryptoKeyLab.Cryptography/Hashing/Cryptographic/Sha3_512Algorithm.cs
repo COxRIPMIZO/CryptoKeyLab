@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CryptoKeyLab.Cryptography.Hashing.Cryptographic
 {
-    internal class Sha3_512Algorithm : IHashAlgorithm
+    public class Sha3_512Algorithm : IHashAlgorithm
     {
         public string? Name => "SHA3_512";
 

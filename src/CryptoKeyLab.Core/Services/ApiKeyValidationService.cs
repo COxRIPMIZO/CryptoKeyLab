@@ -1,4 +1,6 @@
-﻿using CryptoKeyLab.Domain.Interfaces;
+﻿using CryptoKeyLab.Core.Services.InternalCode.ApiKeyHashing;
+using CryptoKeyLab.Domain.Interfaces;
+using CryptoKeyLab.Domain.Interfaces.SystemInternal;
 using CryptoKeyLab.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -10,24 +12,27 @@ namespace CryptoKeyLab.Core.Services
 {
     public class ApiKeyValidationService : IApiKeyValidationService
     {
-        public readonly IApiKeyRepository _apiKeyRepository;
+        private readonly IApiKeyRepository _apiKeyRepository;
+        private readonly ISystemHashProvider _systemHashProvider;
 
         //DI injection of the repository to access API key data
-        public ApiKeyValidationService(IApiKeyRepository apikeyRepo)
+        public ApiKeyValidationService(IApiKeyRepository apikeyRepo,ISystemHashProvider systemHash)
         {
             _apiKeyRepository = apikeyRepo;
+            _systemHashProvider = systemHash;
         }
         public async Task<ApiKeyValidationResult> ValidateAndConsumeKeyAsync(string rawApiKey)
         {
             //===============================================
             //Step 1 : converting the incoming key into hash and check if it exist in the database or not
             //===============================================
-            //var keyIdentity = conputingHash(rawApiKey);
+            var keyIdentity = _systemHashProvider.ComputeHash(rawApiKey);
 
             //===============================================
             //Step 2 : check in the database using Repository if the key exixt or not
             //===============================================
-            var keyEntity = await _apiKeyRepository.GetByKeyHashAsync(rawApiKey);
+            //var keyEntity = await _apiKeyRepository.GetByKeyHashAsync(rawApiKey);
+            var keyEntity = await _apiKeyRepository.GetByKeyHashAsync(keyIdentity);
 
             //===============================================
             //Step 3 : Check the key validation (existence, expiration, active status)

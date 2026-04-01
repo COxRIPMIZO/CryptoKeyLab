@@ -2,6 +2,7 @@ using CryptoKeyLab.API.Filters;
 using CryptoKeyLab.API.Middleware.Exceptions;
 using CryptoKeyLab.Core.Factories;
 using CryptoKeyLab.Core.Services;
+using CryptoKeyLab.Core.Services.InternalCode.DependencyInjection;
 using CryptoKeyLab.Domain.Interfaces;
 using CryptoKeyLab.Domain.Interfaces.Cryptography.Hash;
 using CryptoKeyLab.Domain.Interfaces.Factories;
@@ -39,6 +40,11 @@ builder.Services.AddScoped<IHashFactory, HashFactory>();
 
 //6. Hash Metadata Repository
 builder.Services.AddScoped<IHashMetadataRepository, HashMetadataRepository>();
+
+//7 register for api key hasing utility
+builder.Services.AddApiHashingService();
+//builder.Services.AddScoped<IHashAlgorithm, Sha3_512Algorithm>();
+//builder.Services.AddScoped<ISystemHashProvider, SystemHashProvider>();
 
 #endregion
 
