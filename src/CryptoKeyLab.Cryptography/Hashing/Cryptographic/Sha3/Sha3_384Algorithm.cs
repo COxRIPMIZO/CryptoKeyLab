@@ -8,11 +8,11 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CryptoKeyLab.Cryptography.Hashing.Cryptographic
+namespace CryptoKeyLab.Cryptography.Hashing.Cryptographic.Sha3
 {
-    public class Sha3_256Algorithm : IHashAlgorithm
+    public class Sha3_384Algorithm : IHashAlgorithm
     {
-        public string? Name => "SHA3_256";
+        public string? Name => "SHA3_384";
 
         public CryptoResult ComputeHash(HashOptions hashOptions)
         {
@@ -20,7 +20,7 @@ namespace CryptoKeyLab.Cryptography.Hashing.Cryptographic
             Stopwatch sw = Stopwatch.StartNew();
 
             //step 2. create instance of sha3 algorithm
-            using var sha3 = SHA3_256.Create();
+            using var sha3 = SHA3_384.Create();
 
             //step 3.generate input bytes from the input string
             var inputBytes = Encoding.UTF8.GetBytes(hashOptions.Input);
@@ -37,8 +37,8 @@ namespace CryptoKeyLab.Cryptography.Hashing.Cryptographic
             //step 6. return the result
             return new CryptoResult
             (
-                OutPut : hashString,
-                TimeTakenMilliSeconds : sw.Elapsed.TotalMilliseconds
+                OutPut: hashString,
+                TimeTakenMilliSeconds: sw.Elapsed.TotalMilliseconds
             );
         }
     }

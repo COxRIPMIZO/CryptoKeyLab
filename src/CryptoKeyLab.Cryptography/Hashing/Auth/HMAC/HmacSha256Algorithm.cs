@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CryptoKeyLab.Cryptography.Hashing.Auth
+namespace CryptoKeyLab.Cryptography.Hashing.Auth.HMAC
 {
     public class HmacSha256Algorithm : IHashAlgorithm
     {

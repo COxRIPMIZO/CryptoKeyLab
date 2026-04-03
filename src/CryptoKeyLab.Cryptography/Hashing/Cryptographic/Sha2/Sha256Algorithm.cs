@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CryptoKeyLab.Cryptography.Hashing.Cryptographic
+namespace CryptoKeyLab.Cryptography.Hashing.Cryptographic.Sha2
 {
     public class Sha256Algorithm : IHashAlgorithm
     {

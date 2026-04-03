@@ -11,6 +11,10 @@ namespace CryptoKeyLab.Domain.Models.Cryptography.Hash
         public int Id { get; set; }
         public string? DisplayName { get; set; }
         public string? ClassName { get; set; }
+
+        // NEW: Added Family for UI Grouping!
+        public string? Family { get; set; } = string.Empty;
+        public string? FolderName { get; set; } = string.Empty;
         public string? Category { get; set; }
         public bool RequiresKey { get; set; }
         public bool RequiresSalt { get; set; }

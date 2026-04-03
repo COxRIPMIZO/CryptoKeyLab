@@ -12,28 +12,8 @@ namespace CryptoKeyLab.Core.Factories
 {
     public class HashFactory : IHashFactory
     {
-        ////Dictonary to hold available algorithms
-        //private readonly Dictionary<string, Func<IHashAlgorithm>> _alorithmRegistry = new()
-        //{
-        //    {"SHA-256" , () => new Sha256Algorithm()}
-        //};
-        //public IHashAlgorithm Create(string algorithmName)
-        //{
-        //    //check and return the algorithm if it exists in the registry
-        //    if (_alorithmRegistry.TryGetValue(algorithmName, out var algoFun))
-        //        return algoFun();
-
-        //    //If the algorithm is not found, throw an exception
-        //    throw new NotSupportedException($"Hash algorithm '{algorithmName}' is not supported yet.");
-        //}
-
-        ////For getting the list of available algorithms in the factory, this can be used for UI dropdowns or API documentation
-        //public IEnumerable<string> GetAvailableAlgorithms()
-        //{
-        //    return _alorithmRegistry.Keys;
-        //}
-
         private readonly IHashMetadataRepository _hashMetadataRepository;
+        //private readonly IConfiguration _configuration;
 
         //DI injection of the metadata repository to fetch available algorithms from the database
         public HashFactory(IHashMetadataRepository hashMetaDataRepo) =>
@@ -49,7 +29,16 @@ namespace CryptoKeyLab.Core.Factories
                 throw new NotSupportedException($"Algorithm '{algorithmName}' is not active or does not exist.");
 
             //step 3. Tell .NET where the class lives (Namespace + Assembly Name)
-            var fullClassName = $"CryptoKeyLab.Cryptography.Hashing.{metadata.Category}.{metadata.ClassName}, CryptoKeyLab.Cryptography";
+            //var fullClassName = $"CryptoKeyLab.Cryptography.Hashing.{metadata.Category}.{metadata.ClassName}, CryptoKeyLab.Cryptography";
+
+            //===================================================
+            //Fix : added family name as well in path of class library as we classified the application based on family as well
+            //added : 04-04-2026
+            //===================================================
+            
+            var fullClassName = string.IsNullOrWhiteSpace(metadata.FolderName) 
+                                ?  $"CryptoKeyLab.Cryptography.Hashing.{metadata.Category}.{metadata.ClassName}, CryptoKeyLab.Cryptography"
+                                : $"CryptoKeyLab.Cryptography.Hashing.{metadata.Category}.{metadata.FolderName}.{metadata.ClassName}, CryptoKeyLab.Cryptography";
 
             //step 4.Use reflection to create an instance of the class
             Type? type = Type.GetType(fullClassName);

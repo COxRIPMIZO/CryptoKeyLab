@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CryptoKeyLab.Cryptography.Hashing.Cryptographic
+namespace CryptoKeyLab.Cryptography.Hashing.Cryptographic.Sha3
 {
     public class Sha3_512Algorithm : IHashAlgorithm
     {

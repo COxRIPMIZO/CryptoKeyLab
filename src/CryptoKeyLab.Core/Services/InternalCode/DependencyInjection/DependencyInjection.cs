@@ -1,5 +1,5 @@
 ﻿using CryptoKeyLab.Core.Services.InternalCode.ApiKeyHashing;
-using CryptoKeyLab.Cryptography.Hashing.Cryptographic;
+using CryptoKeyLab.Cryptography.Hashing.Cryptographic.Sha3;
 using CryptoKeyLab.Domain.Interfaces.Cryptography.Hash;
 using CryptoKeyLab.Domain.Interfaces.SystemInternal;
 using Microsoft.Extensions.DependencyInjection;

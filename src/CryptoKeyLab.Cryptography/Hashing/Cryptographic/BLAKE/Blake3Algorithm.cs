@@ -8,7 +8,7 @@ using System.Text;
 using Blake3;
 using System.Threading.Tasks;
 
-namespace CryptoKeyLab.Cryptography.Hashing.Cryptographic
+namespace CryptoKeyLab.Cryptography.Hashing.Cryptographic.Blake
 {
     public class Blake3Algorithm : IHashAlgorithm
     {
