@@ -25,9 +25,9 @@ namespace CryptoKeyLab.Cryptography.Hashing.Cryptographic.Blake
 
             // 2. Optimized Hashing Logic
             // We use UTF8 to convert string to bytes. 
-            // For performance, the 'Hasher.Hash' method is thread-safe and SIMD accelerated.
             var inputBytes = Encoding.UTF8.GetBytes(hashOptions.Input);
 
+            // For performance, the 'Hasher.Hash' method is thread-safe and SIMD accelerated.
             //// BLAKE3 produces a 32-byte (256-bit) hash by default
             var blake3hash = Hasher.Hash(inputBytes);
 

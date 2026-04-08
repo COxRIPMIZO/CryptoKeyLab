@@ -1,0 +1,1 @@
+﻿select * from HashAlgorithms where Family = 'SHA-2'
