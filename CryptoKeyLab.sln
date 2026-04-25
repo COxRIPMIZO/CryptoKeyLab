@@ -19,7 +19,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoKeyLab.LimitResetWork
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CryptoKeyLab.UI", "CryptoKeyLab.UI", "{18AA6E44-3ACF-4733-BDCA-9777365D09A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoKeyLab.UI", "CryptoKeyLab.UI\CryptoKeyLab.UI.csproj", "{9C5DF54E-1080-4756-B701-74BE8B9CED97}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoKeyLab.LimitResetWorker.Core", "CryptoKeyLab.LimitResetWorker.Core\CryptoKeyLab.LimitResetWorker.Core.csproj", "{B050D1AD-48D8-4F91-AF2B-37123D9BA32E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoKeyLab.LimitResetWorker.Repositories", "CryptoKeyLab.LimitResetWorker.Repositories\CryptoKeyLab.LimitResetWorker.Repositories.csproj", "{87069A5F-9694-4D49-BB6B-196618396BA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,17 +53,22 @@ Global
 		{1D1129AB-B20A-4422-AC3A-1F880D662085}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D1129AB-B20A-4422-AC3A-1F880D662085}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D1129AB-B20A-4422-AC3A-1F880D662085}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9C5DF54E-1080-4756-B701-74BE8B9CED97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9C5DF54E-1080-4756-B701-74BE8B9CED97}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9C5DF54E-1080-4756-B701-74BE8B9CED97}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9C5DF54E-1080-4756-B701-74BE8B9CED97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B050D1AD-48D8-4F91-AF2B-37123D9BA32E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B050D1AD-48D8-4F91-AF2B-37123D9BA32E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B050D1AD-48D8-4F91-AF2B-37123D9BA32E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B050D1AD-48D8-4F91-AF2B-37123D9BA32E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87069A5F-9694-4D49-BB6B-196618396BA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87069A5F-9694-4D49-BB6B-196618396BA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87069A5F-9694-4D49-BB6B-196618396BA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87069A5F-9694-4D49-BB6B-196618396BA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1D1129AB-B20A-4422-AC3A-1F880D662085} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
-		{9C5DF54E-1080-4756-B701-74BE8B9CED97} = {18AA6E44-3ACF-4733-BDCA-9777365D09A0}
+		{B050D1AD-48D8-4F91-AF2B-37123D9BA32E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{87069A5F-9694-4D49-BB6B-196618396BA6} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4A130931-BE2B-43F4-A791-D34E3D258010}
