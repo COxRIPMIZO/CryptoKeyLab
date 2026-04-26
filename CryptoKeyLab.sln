@@ -17,11 +17,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CryptoKeyLab.Workers", "Cry
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoKeyLab.LimitResetWorker", "src\CryptoKeyLab.LimitResetWorker\CryptoKeyLab.LimitResetWorker.csproj", "{1D1129AB-B20A-4422-AC3A-1F880D662085}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CryptoKeyLab.UI", "CryptoKeyLab.UI", "{18AA6E44-3ACF-4733-BDCA-9777365D09A0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoKeyLab.LimitResetWorker.Core", "CryptoKeyLab.LimitResetWorker.Core\CryptoKeyLab.LimitResetWorker.Core.csproj", "{B050D1AD-48D8-4F91-AF2B-37123D9BA32E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoKeyLab.LimitResetWorker.Repositories", "CryptoKeyLab.LimitResetWorker.Repositories\CryptoKeyLab.LimitResetWorker.Repositories.csproj", "{87069A5F-9694-4D49-BB6B-196618396BA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
