@@ -10,5 +10,7 @@ namespace CryptoKeyLab.LimitResetWorker.Models
     {
         public int NoOfDataToFetch { get; set; } = 100; // Default value for the number of data to fetch
         public bool KeyStatus { get; set; } = true; // Default value for key status (true for active keys, false for inactive keys)
+        public string ServiceStartDelay { get; set; } = "1M"; // Default value for service start delay
+        public string ServiceStopDelay { get; set; } = "1M"; // Default value for service stop delay
     }
 }
