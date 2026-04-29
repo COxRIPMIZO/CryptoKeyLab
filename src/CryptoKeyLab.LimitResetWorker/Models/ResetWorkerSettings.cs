@@ -12,5 +12,6 @@ namespace CryptoKeyLab.LimitResetWorker.Models
         public bool KeyStatus { get; set; } = true; // Default value for key status (true for active keys, false for inactive keys)
         public string ServiceStartDelay { get; set; } = "1M"; // Default value for service start delay
         public string ServiceStopDelay { get; set; } = "1M"; // Default value for service stop delay
+        public int ApiKeyMaxUsageCount { get; set; } = 5; //denote max apikey usage count in given period
     }
 }

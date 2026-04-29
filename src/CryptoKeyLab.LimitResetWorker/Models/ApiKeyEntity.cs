@@ -16,5 +16,7 @@ namespace CryptoKeyLab.LimitResetWorker.Models
 
         public bool IsActive => DateTime.UtcNow < ExpiresAt;
         public int RateLimitPerMinute { get; set; } = 30; // Default rate limit
+
+        public DateTime LastUsageReset { get; set; }
     }
 }

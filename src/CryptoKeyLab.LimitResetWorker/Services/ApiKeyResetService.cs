@@ -16,12 +16,12 @@ namespace CryptoKeyLab.LimitResetWorker.Services
         }
         public async Task BulkDeactivateExpiredKeysAsync(IEnumerable<Guid> keyIdsToDeactivate)
         {
-            await _apiKeyResetRepo.UpdateUsageCountsToZeroAsync(keyIdsToDeactivate);
+            await _apiKeyResetRepo.SetKeysInactiveAsync(keyIdsToDeactivate);
         }
 
         public async Task BulkResetUsageCountsAsync(IEnumerable<Guid> keyIdsToReset)
         {
-            await _apiKeyResetRepo.SetKeysInactiveAsync(keyIdsToReset);
+            await _apiKeyResetRepo.UpdateUsageCountsToZeroAsync(keyIdsToReset);
         }
     }
 }
