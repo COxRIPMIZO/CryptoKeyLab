@@ -7,7 +7,7 @@ namespace CryptoKeyLab.API.Controllers.TestControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProtectedController : ControllerBase
+    public class TestProtectedController : ControllerBase
     {
         [HttpGet("test-security")] // This endpoint is protected by the ApiKeyAuthFilter, so only requests with a valid API key will reach this code.
         [ServiceFilter(typeof(ApiKeyAuthFilter))] // 🛡️ THE SHIELD! This one line locks the door.

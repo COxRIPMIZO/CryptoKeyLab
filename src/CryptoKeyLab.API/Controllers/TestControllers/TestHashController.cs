@@ -9,11 +9,11 @@ namespace CryptoKeyLab.API.Controllers.TestControllers
     [Route("api/[controller]")]
     [ApiController]
     [ServiceFilter(typeof(ApiKeyAuthFilter))]
-    public class HashController : ControllerBase
+    public class TestHashController : ControllerBase
     {
         private readonly IHashFactory _hashFactory;
 
-        public HashController(IHashFactory hashfactory)
+        public TestHashController(IHashFactory hashfactory)
         {
             _hashFactory = hashfactory;
         }

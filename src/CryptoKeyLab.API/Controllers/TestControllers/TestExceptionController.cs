@@ -5,7 +5,7 @@ namespace CryptoKeyLab.API.Controllers.TestControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ExceptionController : ControllerBase
+    public class TestExceptionController : ControllerBase
     {
         [HttpGet("test-exception")]
         public IActionResult TestCrash()
