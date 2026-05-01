@@ -5,9 +5,11 @@ using CryptoKeyLab.Core.Services;
 using CryptoKeyLab.Core.Services.InternalCode.DependencyInjection;
 using CryptoKeyLab.Domain.Interfaces;
 using CryptoKeyLab.Domain.Interfaces.Cryptography.Hash;
+using CryptoKeyLab.Domain.Interfaces.Encoding;
 using CryptoKeyLab.Domain.Interfaces.Factories;
 using CryptoKeyLab.Infrastructure.Repositories;
 using CryptoKeyLab.Infrastructure.Repositories.Cryptography.HashMetaData;
+using CryptoKeyLab.Infrastructure.Repositories.Encoding;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,9 +45,12 @@ builder.Services.AddScoped<IHashMetadataRepository, HashMetadataRepository>();
 
 //7 register for api key hasing utility
 builder.Services.AddApiHashingService();
-//builder.Services.AddScoped<IHashAlgorithm, Sha3_512Algorithm>();
-//builder.Services.AddScoped<ISystemHashProvider, SystemHashProvider>();
 
+
+//8. add encoder service
+builder.Services.AddScoped<IEncodingMetadataRepository, EncodingMetadataRepository>();
+
+builder.Services.AddScoped<IEncodingFactory, EncodingFactory>();
 #endregion
 
 #region Register the middlewares

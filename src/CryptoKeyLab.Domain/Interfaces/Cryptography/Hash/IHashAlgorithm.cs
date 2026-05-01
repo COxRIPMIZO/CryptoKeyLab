@@ -1,4 +1,5 @@
 ﻿using CryptoKeyLab.Domain.Models.Cryptography;
+using CryptoKeyLab.Domain.Models.Cryptography.Hash;
 using System;
 using System.Collections.Generic;
 using System.Linq;

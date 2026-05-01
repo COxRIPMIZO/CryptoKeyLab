@@ -1,5 +1,6 @@
 ﻿using CryptoKeyLab.Domain.Interfaces.Cryptography.Hash;
 using CryptoKeyLab.Domain.Models.Cryptography;
+using CryptoKeyLab.Domain.Models.Cryptography.Hash;
 using Org.BouncyCastle.Crypto.Digests;
 using System.Diagnostics;
 using System.Linq;

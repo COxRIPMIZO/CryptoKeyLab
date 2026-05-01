@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using Blake3;
 using System.Threading.Tasks;
+using CryptoKeyLab.Domain.Models.Cryptography.Hash;
 
 namespace CryptoKeyLab.Cryptography.Hashing.Cryptographic.Blake
 {

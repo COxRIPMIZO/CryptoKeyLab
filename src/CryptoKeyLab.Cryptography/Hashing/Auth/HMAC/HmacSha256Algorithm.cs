@@ -1,5 +1,6 @@
 ﻿using CryptoKeyLab.Domain.Interfaces.Cryptography.Hash;
 using CryptoKeyLab.Domain.Models.Cryptography;
+using CryptoKeyLab.Domain.Models.Cryptography.Hash;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,6 +8,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+
+using Encoding = System.Text.Encoding;
 
 namespace CryptoKeyLab.Cryptography.Hashing.Auth.HMAC
 {

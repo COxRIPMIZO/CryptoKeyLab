@@ -1,6 +1,6 @@
 ﻿using CryptoKeyLab.API.Filters;
 using CryptoKeyLab.Domain.Interfaces.Factories;
-using CryptoKeyLab.Domain.Models.Cryptography;
+using CryptoKeyLab.Domain.Models.Cryptography.Hash;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
