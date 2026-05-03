@@ -6,6 +6,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <!--<ItemGroup>
+    <Compile Remove="Controllers\Encoding\**" />
+    <Content Remove="Controllers\Encoding\**" />
+    <EmbeddedResource Remove="Controllers\Encoding\**" />
+    <None Remove="Controllers\Encoding\**" />
+  </ItemGroup>-->
+
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.14" />
     <PackageReference Include="Scalar.AspNetCore" Version="2.13.15" />

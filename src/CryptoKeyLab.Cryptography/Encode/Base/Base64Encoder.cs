@@ -12,7 +12,7 @@ namespace CryptoKeyLab.Cryptography.Encode.Base
         public CryptoResult Decoding(EncodingOptions options)
         {
             //step 1.check the parmaters
-            if (string.IsNullOrWhiteSpace(options.encodingInput))
+            if (string.IsNullOrWhiteSpace(options.InputData))
                 return new CryptoResult(string.Empty, 0);
 
             //step 2. create stop watch 
@@ -21,7 +21,7 @@ namespace CryptoKeyLab.Cryptography.Encode.Base
             try
             {
                 //step 3.get bytes of inputs
-                var bytes = Convert.FromBase64String(options.encodingInput);
+                Span<byte> bytes = Convert.FromBase64String(options.InputData);
 
                 //step 4. convert it into base64
                 var plainText = System.Text.Encoding.UTF8.GetString(bytes);
@@ -30,7 +30,7 @@ namespace CryptoKeyLab.Cryptography.Encode.Base
 
                 return new CryptoResult(plainText, sw.Elapsed.TotalMilliseconds);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 sw.Stop();
                 return new CryptoResult("Error: Invalid Base64 input string.",sw.Elapsed.TotalMilliseconds);
@@ -40,14 +40,14 @@ namespace CryptoKeyLab.Cryptography.Encode.Base
         public CryptoResult Encoding(EncodingOptions options)
         {
             //step 1.check the parmaters
-            if (string.IsNullOrWhiteSpace(options.encodingInput))
+            if (string.IsNullOrWhiteSpace(options.InputData))
                 return new CryptoResult(string.Empty, 0);
 
             //step 2. create stop watch 
             Stopwatch sw = Stopwatch.StartNew();
 
             //step 3.get bytes of inputs
-            var bytes = System.Text.Encoding.UTF8.GetBytes(options.encodingInput);
+            Span<byte> bytes = System.Text.Encoding.UTF8.GetBytes(options.InputData);
             
             //step 4. convert it into base64
             var base64string = Convert.ToBase64String(bytes);

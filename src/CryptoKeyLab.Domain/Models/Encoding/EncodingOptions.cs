@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace CryptoKeyLab.Domain.Models.Encoding
 {
-    public record EncodingOptions(string encodingInput);
+    public record EncodingOptions(string InputData);
 }
