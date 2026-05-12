@@ -31,6 +31,7 @@ namespace CryptoKeyLab.Domain.Models
     (
         string ApiKey,
         DateTime ExpireAt,
+        int UsageCount,
         string Message,
         int RateLimitPerMinute
     );

@@ -15,11 +15,13 @@ namespace CryptoKeyLab.Cryptography.Encode.Base
 
         public CryptoResult Decoding(EncodingOptions options)
         {
+
+            throw new NotImplementedException();
             //step 1. Validate the input data
             if (string.IsNullOrWhiteSpace(options.InputData))
                 return new CryptoResult(string.Empty, 0);
 
-            var d = Convert.tobas
+            //var d = Convert.tobas
         }
 
         public CryptoResult Encoding(EncodingOptions options)

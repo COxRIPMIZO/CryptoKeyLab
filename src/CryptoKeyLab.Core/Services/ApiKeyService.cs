@@ -86,6 +86,7 @@ namespace CryptoKeyLab.Core.Services
             (
                 ApiKey: fullPlainTextKey,
                 ExpireAt : keyEntity.ExpiresAt,
+                UsageCount : keyEntity.TotalUsageCount,
                 Message: "Warning: This key will expire in 24 hours and will not be shown again. Do not share it.",
                 RateLimitPerMinute : keyEntity.RateLimitPerMinute
             );
