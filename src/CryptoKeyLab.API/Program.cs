@@ -51,6 +51,10 @@ builder.Services.AddApiHashingService();
 builder.Services.AddScoped<IEncodingMetadataRepository, EncodingMetadataRepository>();
 
 builder.Services.AddScoped<IEncodingFactory, EncodingFactory>();
+
+//9.add automatic  health checkup of api
+builder.Services.AddHealthChecks();
+
 #endregion
 
 #region Register the middlewares
@@ -79,5 +83,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+//mapping the health check endpoint to monitor the health of the application, this can be used by monitoring tools or load balancers to check if the application is running and healthy
+app.MapHealthChecks("/health");
 
 app.Run();
