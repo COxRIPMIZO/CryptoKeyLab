@@ -2,15 +2,20 @@ using CryptoKeyLab.API.Filters;
 using CryptoKeyLab.API.Middleware.Exceptions;
 using CryptoKeyLab.Core.Factories;
 using CryptoKeyLab.Core.Services;
+using CryptoKeyLab.Core.Services.Cache;
 using CryptoKeyLab.Core.Services.InternalCode.DependencyInjection;
+using CryptoKeyLab.Domain.Enums;
 using CryptoKeyLab.Domain.Interfaces;
+using CryptoKeyLab.Domain.Interfaces.Caching;
 using CryptoKeyLab.Domain.Interfaces.Cryptography.Hash;
 using CryptoKeyLab.Domain.Interfaces.Encoding;
 using CryptoKeyLab.Domain.Interfaces.Factories;
+using CryptoKeyLab.Infrastructure.Caching;
 using CryptoKeyLab.Infrastructure.Repositories;
 using CryptoKeyLab.Infrastructure.Repositories.Cryptography.HashMetaData;
 using CryptoKeyLab.Infrastructure.Repositories.Encoding;
 using Scalar.AspNetCore;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +25,12 @@ builder.Services.AddControllers();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+#region Caching Connection
+
+builder.Services.AddCacheServices(builder.Configuration);
+
+#endregion
 
 #region Working and registering core services
 
