@@ -16,6 +16,7 @@ using CryptoKeyLab.Infrastructure.Repositories.Cryptography.HashMetaData;
 using CryptoKeyLab.Infrastructure.Repositories.Encoding;
 using Scalar.AspNetCore;
 using StackExchange.Redis;
+using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

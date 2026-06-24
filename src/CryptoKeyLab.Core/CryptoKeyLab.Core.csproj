@@ -16,4 +16,9 @@
     <ProjectReference Include="..\CryptoKeyLab.Domain\CryptoKeyLab.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+
 </Project>
