@@ -16,6 +16,11 @@ namespace CryptoKeyLab.Infrastructure.Caching
         private readonly IMemoryCache _memoryCache;
         private readonly ConcurrentDictionary<string, object> _locks = new();
 
+        public InMemoryCacheRepository(IMemoryCache memoryCache)
+        {
+            _memoryCache = memoryCache;
+        }
+
         public ValueTask<T?> GetAsync<T>(string key)
         {
             _memoryCache.TryGetValue(key, out T? value);
