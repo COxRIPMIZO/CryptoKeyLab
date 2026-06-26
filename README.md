@@ -1,143 +1,214 @@
 <div align="center">
+  <img src="https://githubusercontent.com" alt="CryptoKeyLab Banner" width="800" style="max-width: 100%;" />
 
-# 🔐 CryptoKeyLab
-**The Ultimate Cryptography-as-a-Service (CaaS) Platform**
+  <h1>CryptoKeyLab</h1>
+  <p><strong>The Ultimate Cryptography-as-a-Service (CaaS) Platform</strong></p>
 
-[![.NET 9](https://img.shields.io/badge/.NET-9.0-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
-[![Architecture](https://img.shields.io/badge/Architecture-Clean%20(Onion)-00E5FF?style=for-the-badge)](#-architecture)
-[![Database](https://img.shields.io/badge/Database-Dapper%20%7C%20SQL-CC2927?style=for-the-badge&logo=microsoft-sql-server&logoColor=white)](https://github.com/DapperLib/Dapper)
-[![Cache](https://img.shields.io/badge/Cache-Redis%20%7C%20Memory-DC382D?style=for-the-badge&logo=redis&logoColor=white)](#-high-performance-caching)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+  <p>
+    <a href="https://github.com"><img src="https://shields.io" alt="MIT License"></a>
+    <a href="https://microsoft.com"><img src="https://shields.io" alt=".NET 9"></a>
+    <a href="https://github.com"><img src="https://shields.io" alt="GitHub Stars"></a>
+    <a href="https://github.com"><img src="https://shields.io" alt="GitHub Issues"></a>
+  </p>
 
-*A high-performance, stateless, and metadata-driven cryptographic engine supporting 115+ algorithms. Built for developers who demand uncompromising security, extreme low latency, and enterprise-grade architecture.*
-
-[Explore API Docs](#) · [Report Bug](issues) · [Request Feature](issues)
-
+  <p>
+    <strong><a href="#-overview">Overview</a></strong> •
+    <strong><a href="#-architecture">Architecture</a></strong> •
+    <strong><a href="#-supported-algorithms">Algorithms</a></strong> •
+    <strong><a href="#-quick-start">Quick Start</a></strong> •
+    <strong><a href="#-api-reference">API Reference</a></strong> •
+    <strong><a href="#-license">License</a></strong>
+  </p>
 </div>
 
+***
+
+## ⚡ Overview
+
+> Modern application security demands both ironclad compliance and raw performance. CryptoKeyLab bridges this gap by delivering a high-performance, stateless, metadata-driven cryptographic engine exposed via a unified, sub-millisecond RESTful API. Built for developers who refuse to compromise between speed and security.
+
+CryptoKeyLab abstracts the complexity of implementing low-level cryptographic primitives. By combining an enterprise-grade .NET 9 engine with a dynamic database-driven orchestration layer, it provides instant access to over 115+ cryptographic algorithms through a secure, globally scalable gateway.
+
+### Key Features
+* **Sub-Millisecond Engine:** Stateless execution designed for high-throughput, low-latency microservices.
+* **100% OCP Compliant:** Dynamically loads algorithms at runtime using a Reflection-based Factory pattern driven by database metadata.
+* **Zero-Trust Security:** Built-in Action Filter gatekeeper. API keys are cryptographically isolated and only stored as one-way SHA-256 hashes.
+* **Atomic Rate-Limiting:** Distributed Cache-Aside pattern supporting Redis and localized InMemory providers.
+* **Resilient Infrastructure:** Dedicated background workers handle token bucket resets, coupled with global structured error sanitization via `IExceptionHandler`.
+
 ---
 
-## ⚡ Why CryptoKeyLab?
+## 🏗️ Architecture
 
-Modern applications require complex cryptography, but implementing it securely is hard. **CryptoKeyLab** abstracts the complexity of Symmetric/Asymmetric encryption, Hashing, Encoding, and secure Data Generation into a blazing-fast, RESTful API.
-
-Whether you need to hash a password using `Argon2id`, encrypt a payload using hardware-accelerated `AES-256-GCM`, or generate a Time-based `UUIDv7`, CryptoKeyLab handles it with sub-millisecond latency.
-
-### ✨ Key Features
-- **🌐 115+ Algorithms:** Supports industry standards (SHA-3, AES-GCM), high-speed hashes (BLAKE3), KDFs (Argon2, bcrypt), and exotic standards (SM3, GOST).
-- **🛡️ Zero-Trust Security:** Built-in API Key Gatekeeper. We never store plain-text keys. All API keys are hashed using SHA-256 before persistence.
-- **🚀 Cache-Aside Architecture:** Agnostic caching layer supporting both **Redis** and **In-Memory Cache** for sub-millisecond rate-limiting and metadata fetching.
-- **⚙️ Dynamic Reflection Engine:** Algorithms are loaded dynamically via database metadata. No hardcoded `switch` statements. Completely Open/Closed Principle (OCP) compliant.
-- **⏱️ Atomic Rate Limiting:** Self-healing background workers (`LimitResetWorker`) automatically manage API quotas and key expirations without database deadlocks.
-
----
-
-## 🏛️ Enterprise Architecture
-
-CryptoKeyLab is built using a strict **Clean Architecture (Onion Architecture)** inside a .NET 9 Monorepo.
+CryptoKeyLab is engineered around a strict **Clean Architecture** paradigm within a monorepo structure. This guarantees complete decoupling of business rules from database frameworks and delivery mechanisms.
 
 ```mermaid
-graph TD;
-    API[CryptoKeyLab.API] --> Core[CryptoKeyLab.Core];
-    API --> Infrastructure[CryptoKeyLab.Infrastructure];
-    Core --> Domain[CryptoKeyLab.Domain];
-    Infrastructure --> Domain;
-    Core --> Cryptography[CryptoKeyLab.Cryptography];
-    Cryptography --> Domain;
-Domain: Pure C# contracts, Interfaces, and Immutable Records (DTOs). Zero dependencies.
-Cryptography: The isolated Math Engine. Contains pure cryptographic implementations utilizing standard libraries and high-performance packages (BouncyCastle, BLAKE3).
-Infrastructure: High-throughput Data Access using Dapper, Stored Procedures, and Redis.
-Core: Business logic, Validation Services, and the Reflection-based Factory pattern.
-API: The HTTP Gateway, featuring Global Exception Handling, Swagger/Scalar Documentation, and Action Filters.
-🧮 Supported Algorithms
-CryptoKeyLab maps algorithms dynamically. Expand the sections below to see the full list of currently supported algorithms.
-<details>
-<summary><b>🔒 Hashing & Passwords (KDFs)</b></summary>
-<br>
-- <b>Cryptographic:</b> SHA-256, SHA-512, SHA-3 (Keccak), BLAKE3, Whirlpool, RIPEMD-160 <br>
-- <b>Password (KDF):</b> Argon2id, bcrypt, scrypt, PBKDF2 <br>
-- <b>Auth (MAC):</b> HMAC-SHA256, HMAC-BLAKE3, KMAC256 <br>
-- <b>XOF / Fast:</b> SHAKE256, xxHash3, MurmurHash3 <br>
-- <b>Regional:</b> SM3 (China), Streebog (Russia), Kupyna (Ukraine)
-</details>
-<details>
-<summary><b>🛡️ Symmetric & Asymmetric Encryption</b></summary>
-<br>
-- <b>Symmetric:</b> AES-256-GCM, AES-256-CBC, ChaCha20-Poly1305, Camellia, Twofish <br>
-- <b>Asymmetric:</b> RSA-4096, ECIES (Secp256r1), SM2 <br>
-- <b>Post-Quantum:</b> CRYSTALS-Kyber-768
-</details>
-<details>
-<summary><b>🔤 Encoding & Generators</b></summary>
-<br>
-- <b>Encoding:</b> Base64, Base64Url, Base32, Base58 (Bitcoin), Hex (Base16) <br>
-- <b>Generators:</b> Secure Passwords, UUIDv4, UUIDv7 (Time-based), NanoID, BIP39 Mnemonics
-</details>
-💻 Quick Start
-Prerequisites
-.NET 9.0 SDK
-SQL Server (LocalDB or Docker)
-Redis (Optional, falls back to InMemory Cache)
-1. Clone & Setup
-code
-Bash
-git clone https://github.com/COxRIPMIZO/CryptoKeyLab.git
-cd CryptoKeyLab/src
-2. Database Setup
-Execute the provided SQL scripts located in the /db folder to generate the ApiKeys and AlgorithmMetadata tables. Update your appsettings.json in the CryptoKeyLab.API project:
-code
-JSON
-"ConnectionStrings": {
-    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=CryptoKeyLabDb;Trusted_Connection=True;"
-},
-"CacheSettings": {
-    "Provider": "InMemory" 
-}
-3. Run the API
-code
-Bash
-cd CryptoKeyLab.API
-dotnet run
-Navigate to https://localhost:7036/scalar/v1 to view the interactive API documentation.
-📡 API Usage Example
-1. Generate an API Key
-code
-Http
-POST /api/Access/generate-temp-key
-Response:
-code
-JSON
-{
-  "apiKey": "ckl_tmp_g3X4V8YwN6Z7L...",
-  "expiresAt": "2026-06-28T12:00:00Z",
-  "rateLimitPerMinute": 30
-}
-2. Compute a Hash
-code
-Http
-POST /api/Hash/compute-hash?algorithmName=BLAKE3
-X-API-KEY: ckl_tmp_g3X4V8YwN6Z7L...
+graph LR
+    %% Style definitions for Dark Mode compatibility
+    classDef domain fill:#1f1f2e,stroke:#5c5c8a,stroke-width:2px,color:#fff;
+    classDef core fill:#2d1a4d,stroke:#8a5cff,stroke-width:2px,color:#fff;
+    classDef crypto fill:#1a332d,stroke:#33cc99,stroke-width:2px,color:#fff;
+    classDef infra fill:#4d331a,stroke:#ff9933,stroke-width:2px,color:#fff;
+    classDef api fill:#4d1a24,stroke:#ff3366,stroke-width:2px,color:#fff;
 
+    API[API Layer / Presentation]:::api
+    Infra[Infrastructure Layer]:::infra
+    Crypto[Cryptography Engine Layer]:::crypto
+    Core[Core / Application Layer]:::core
+    Domain[Domain Layer]:::domain
+
+    API --> Core
+    API --> Infra
+    Infra --> Core
+    Core --> Crypto
+    Crypto --> Domain
+    Core --> Domain
+
+    subgraph Core Boundaries
+        Core
+        Crypto
+    end
+```
+
+### Layer Breakdown
+* **Domain:** Contains pure enterprise entities, exceptions, and value objects. Zero external dependencies.
+* **Cryptography Engine:** The algorithmic core. Implements the Reflection-based Factory pattern to resolve primitives dynamically.
+* **Core (Application):** Orchestrates application flow, command/query handling, and abstract caching contracts.
+* **Infrastructure:** Manages data access via SQL Server using high-throughput **Dapper** and native Stored Procedures. Houses `LimitResetWorker` background routines.
+* **API (Presentation):** Net 9.0 Minimal APIs exposing endpoints, Scalar/OpenAPI schemas, and the Zero-Trust security filter.
+
+---
+
+## 🔐 Supported Algorithms
+
+CryptoKeyLab natively supports **115+ algorithms**. Click below to expand the enterprise registry.
+
+<details>
+<summary><b>View Hashing & Key Derivation Functions (KDFs)</b></summary>
+
+* **Secure Hashing:** SHA-224, SHA-256, SHA-384, SHA-512, SHA3-256, SHA3-512, BLAKE3, Whirlpool, SM3, GOST R 34.11-2012.
+* **Password Hashing & KDFs:** Argon2id, bcrypt, scrypt, PBKDF2.
+* **MAC Variants:** HMAC-SHA256, HMAC-SHA512, KMAC128, KMAC256.
+</details>
+
+<details>
+<summary><b>View Symmetric & Asymmetric Encryption</b></summary>
+
+* **Symmetric Ciphers:** AES-128-GCM, AES-256-GCM, AES-256-CBC, ChaCha20-Poly1305, Camellia, ARIA, SM4.
+* **Asymmetric Ciphers:** RSA-2048, RSA-4096 (OAEP/PSS padding support).
+* **Elliptic Curve & Post-Quantum:** ECC (secp256k1, Edwards Curves), CRYSTALS-Kyber-768 (Quantum-Resistant).
+</details>
+
+<details>
+<summary><b>View Encoders & Secure Generators</b></summary>
+
+* **Data Binary Encoders:** Base32, Base64, Base64URL, Base58 (Bitcoin alphabet), Hexadecimal.
+* **Identifiers & Tokens:** UUIDv4, UUIDv7 (time-ordered), NanoID, Cryptographically Secure Pseudo-Random Passwords (CSPRNG).
+</details>
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+* [.NET 9.0 SDK](https://microsoft.com)
+* [SQL Server](https://microsoft.com) (or Docker instance)
+* Redis (Optional, defaults to InMemory caching)
+
+### Installation & Setup
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com
+   cd CryptoKeyLab
+   ```
+
+2. **Configure Environment Variables:**
+   Update the connection strings and caching preferences in `src/CryptoKeyLab.Api/appsettings.json`:
+   ```json
+   {
+     "ConnectionStrings": {
+       "DefaultConnection": "Server=YOUR_SERVER;Database=CryptoKeyLabDb;Trusted_Connection=True;TrustServerCertificate=True;"
+     },
+     "CacheSettings": {
+       "Provider": "Redis", 
+       "RedisConnectionString": "localhost:6379"
+     }
+   }
+   ```
+
+3. **Initialize Database & Run Migrations:**
+   ```bash
+   dotnet ef database update --project src/CryptoKeyLab.Infrastructure --startup-project src/CryptoKeyLab.Api
+   ```
+
+4. **Launch the Engine:**
+   ```bash
+   dotnet run --project src/CryptoKeyLab.Api
+   ```
+   The interactive Scalar API sandbox will be available at `http://localhost:5000/scalar/v1`.
+
+---
+
+## 🔌 API Reference
+
+### 1. Provision an API Key
+Generate an isolated client access credential. The plain text token is returned exactly *once* and stored downstream as a one-way SHA-256 hash.
+
+* **HTTP Method:** `POST`
+* **Endpoint:** `/api/v1/auth/keys`
+
+#### Request Payload
+```json
 {
-  "input": "MySecureData"
+  "clientName": "Enterprise-Gateway-Production",
+  "rateLimitTier": "Premium"
 }
-Response:
-code
-JSON
+```
+
+#### Response Payload (201 Created)
+```json
 {
-  "algorithmUsed": "BLAKE3",
-  "output": "d66d6d4c67a6f5542bca021...",
-  "timeTakenMs": 0.0014
+  "clientId": "d7b2a9f4-3091-4e73-b26a-982cb1b0e142",
+  "apiKey": "ckl_live_7f8a9b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b",
+  "status": "Active",
+  "createdAt": "2026-06-27T01:20:00Z"
 }
-🤝 Contributing
-Contributions make the open-source community an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
-Fork the Project
-Create your Feature Branch (git checkout -b feature/AmazingFeature)
-Commit your Changes (git commit -m 'feat: Add some AmazingFeature')
-Push to the Branch (git push origin feature/AmazingFeature)
-Open a Pull Request
-📝 License
-Distributed under the MIT License. See LICENSE for more information.
+```
+
+### 2. Compute a Cryptographic Hash
+Execute high-performance, stateless transformations over the secure runtime engine.
+
+* **HTTP Method:** `POST`
+* **Endpoint:** `/api/v1/crypto/hash`
+* **Headers:** `X-API-Key: ckl_live_7f8a9b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b`
+
+#### Request Payload
+```json
+{
+  "algorithm": "BLAKE3",
+  "payload": "The quick brown fox jumps over the lazy dog",
+  "encoding": "Hex"
+}
+```
+
+#### Response Payload (200 OK)
+```json
+{
+  "algorithm": "BLAKE3",
+  "hash": "2d3d977f726a849b23b185f4b4ef3b3a0e681c6a6f6580f55b11267b2d56a312",
+  "executionTimeMs": 0.12
+}
+```
+
+---
+
+## 📄 License
+
+Distributed under the GNU License. See [LICENSE](LICENSE) for more information.
+
+***
+
 <div align="center">
-<b>Built with 💻 by <a href="https://github.com/COxRIPMIZO">Vishal Yadav</a></b>
+  <p>Built with ⚡ by <a href="https://github.com">Vishal Yadav</a></p>
 </div>
