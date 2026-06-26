@@ -5,7 +5,7 @@
   <p><strong>The Ultimate Cryptography-as-a-Service (CaaS) Platform</strong></p>
 
   <p>
-    <a href="https://github.com"><img src="https://shields.io" alt="MIT License"></a>
+    <a href="https://github.com"><img src="https://shields.io" alt="GNU License"></a>
     <a href="https://microsoft.com"><img src="https://shields.io" alt=".NET 9"></a>
     <a href="https://github.com"><img src="https://shields.io" alt="GitHub Stars"></a>
     <a href="https://github.com"><img src="https://shields.io" alt="GitHub Issues"></a>
