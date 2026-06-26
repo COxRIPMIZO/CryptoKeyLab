@@ -137,10 +137,9 @@ CryptoKeyLab natively supports **115+ algorithms**. Click below to expand the en
    }
    ```
 
-3. **Initialize Database & Run Migrations:**
-   ```bash
-   dotnet ef database update --project src/CryptoKeyLab.Infrastructure --startup-project src/CryptoKeyLab.Api
-   ```
+3. **Initialize Database (Dapper/SQL):**
+   CryptoKeyLab utilizes Dapper for extreme performance, meaning there are no EF Core migrations. 
+Simply execute the provided raw SQL scripts located in the `/db` folder against your SQL Server instance to generate the required `ApiKeys` and `AlgorithmMetadata` tables, along with all optimized Stored Procedures.
 
 4. **Launch the Engine:**
    ```bash
