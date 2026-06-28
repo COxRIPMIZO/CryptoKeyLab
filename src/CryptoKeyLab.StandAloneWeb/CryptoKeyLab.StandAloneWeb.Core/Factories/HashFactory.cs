@@ -17,7 +17,7 @@ namespace CryptoKeyLab.StandAloneWeb.Core.Factories
         private readonly IAlgorithmRegistry _algorithmRegistry;
 
         //DI injection of the metadata repository to fetch available algorithms from the database
-        public HashFactory(IAlgorithmRegistry algorithmRegistry) =>
+        public  HashFactory(IAlgorithmRegistry algorithmRegistry) =>
             _algorithmRegistry = algorithmRegistry;
 
         public Task<IHashAlgorithm> CreateAsync(string algorithmName)
@@ -48,8 +48,12 @@ namespace CryptoKeyLab.StandAloneWeb.Core.Factories
             if (type == null)
                 throw new Exception($"System Error: Class '{metadata.ClassName}' not found in the Cryptography library.");
 
-            //step 5. Cast the created instance to IHashAlgorithm and return it
-            return (Task<IHashAlgorithm>)Activator.CreateInstance(type)!;
+            // ====================================================================
+            // 🛠️ THE FIX: Cast to IHashAlgorithm first, then wrap in Task.FromResult!
+            // ====================================================================
+            var instance = (IHashAlgorithm)Activator.CreateInstance(type)!;
+
+            return Task.FromResult(instance);
         }
 
         public async Task<IEnumerable<HashAlgorithmMetadata>> GetAvailableAlgorithmsAsync()

@@ -19,7 +19,7 @@ namespace CryptoKeyLab.StandAloneWeb.Core.Factories
             _algorithmRegistry = algorithmRegistry;
         }
 
-        public async Task<IEncodingAlgorithm> CreateAsync(string algorithm)
+        public Task<IEncodingAlgorithm> CreateAsync(string algorithm)
         {
             //step 1.check existence of algorithm
             //var algoMetaData = await _metadataRepository.GetAlgorithmByDisplayNameAsync(algorithm);
@@ -39,7 +39,9 @@ namespace CryptoKeyLab.StandAloneWeb.Core.Factories
                 throw new Exception($"System Error: Class '{algoMetaData.ClassName}' not found in the Cryptography library.");
 
             //step 5.create an instance of classname using reflection'
-            return (IEncodingAlgorithm)Activator.CreateInstance(classInstance)!;
+            var instance = (IEncodingAlgorithm)Activator.CreateInstance(classInstance)!;
+
+            return Task.FromResult(instance);
         }
 
         public async Task<IEnumerable<EncodingMetaData>> GetAvailableAlgorithmsAsync()

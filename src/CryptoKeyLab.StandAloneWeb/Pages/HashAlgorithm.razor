@@ -1,0 +1,143 @@
+﻿@page "/hash-algorithm"
+@inject IAlgorithmRegistry Registry
+@inject IHashFactory Factory
+
+<PageTitle>Hashing Lab - CryptoKeyLab</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-8">
+    <MudText Typo="Typo.h4" Style="font-weight: 800; color: #F8FAFC;" Class="mb-2">🧪 Hashing Laboratory</MudText>
+    <MudText Typo="Typo.body1" Style="color: #94A3B8;" Class="mb-8">Compute cryptographically secure one-way hashes entirely in your browser using local CPU power.</MudText>
+
+    <MudGrid Spacing="6">
+
+        <!-- LEFT COLUMN: INPUTS & SETTINGS -->
+        <MudItem xs="12" md="6">
+            <MudCard Elevation="0" Style="background-color: #111827; border: 1px solid #1E293B; border-radius: 12px;" Class="pa-6">
+                <MudCardContent>
+
+                    <!-- DYNAMIC ALGORITHM SELECTOR -->
+                    <MudSelect T="HashAlgorithmMetadata"
+                               Label="Select Hashing Algorithm"
+                               @bind-Value="_selectedAlgo"
+                               Variant="Variant.Outlined"
+                               Class="mb-6">
+                        @foreach (var algo in Registry.HashAlgorithmMetadata)
+                        {
+                            <MudSelectItem Value="@algo">@algo.DisplayName</MudSelectItem>
+                        }
+                    </MudSelect>
+
+                    <!-- DYNAMIC KEY FIELD (Rendered only if 'RequiresKey' is true in the JSON!) -->
+                    @if (_selectedAlgo != null && _selectedAlgo.RequiresKey)
+                    {
+                        <div class="fade-in">
+                            <MudTextField @bind-Value="_key"
+                                          Label="Secret Key"
+                                          Variant="Variant.Outlined"
+                                          InputType="InputType.Text"
+                                          Class="mb-6"
+                                          Placeholder="Enter HMAC Key..." />
+                        </div>
+                    }
+
+                    <!-- DATA INPUT -->
+                    <MudTextField @bind-Value="_inputData"
+                                  Label="Input Plaintext"
+                                  Variant="Variant.Outlined"
+                                  Lines="5"
+                                  Class="mb-6"
+                                  Placeholder="Type data to hash here..." />
+
+                    <!-- COMPUTE BUTTON -->
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               Size="Size.Large"
+                               OnClick="ComputeHash"
+                               FullWidth="true"
+                               Style="border-radius: 8px; font-weight: 600; padding: 12px;"
+                               Disabled="@(_selectedAlgo == null || string.IsNullOrEmpty(_inputData))">
+                        Compute Hash
+                    </MudButton>
+
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+        <!-- RIGHT COLUMN: OUTPUTS & METRICS -->
+        <MudItem xs="12" md="6">
+            <MudCard Elevation="0" Style="background-color: #111827; border: 1px solid #1E293B; border-radius: 12px; height: 100%;" Class="pa-6">
+                <MudCardContent>
+                    <MudText Typo="Typo.h6" Style="font-weight: 700; color: #F8FAFC;" Class="mb-4">Output Result</MudText>
+
+                    <!-- HASH OUTPUT (Monospaced font for clean readability) -->
+                    <MudTextField Value="@_hashResult"
+                                  Label="Computed Hash"
+                                  Variant="Variant.Outlined"
+                                  ReadOnly="true"
+                                  Lines="4"
+                                  Class="mb-6"
+                                  Style="font-family: monospace; font-size: 0.95rem; color: #10B981;" />
+
+                    @if (_timeTakenMs.HasValue)
+                    {
+                        <!-- PERFORMANCE METRICS PANEL -->
+                        <MudPaper Class="pa-4 rounded-lg" Style="background-color: #0F172A; border: 1px solid #1E293B;">
+                            <MudStack Row="true" Justify="Justify.SpaceBetween">
+                                <MudText Typo="Typo.body2" Style="color: #94A3B8;">Algorithm:</MudText>
+                                <MudText Typo="Typo.body2" Style="font-weight: 700; color: #F8FAFC;">@_selectedAlgo?.DisplayName</MudText>
+                            </MudStack>
+                            <MudStack Row="true" Justify="Justify.SpaceBetween" Class="mt-2">
+                                <MudText Typo="Typo.body2" Style="color: #94A3B8;">Execution Time:</MudText>
+                                <MudChip T="string" Color="Color.Secondary" Size="Size.Small" Style="font-weight: bold;">@_timeTakenMs.Value.ToString("F4") ms</MudChip>
+                            </MudStack>
+                        </MudPaper>
+                    }
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+<style>
+    .fade-in {
+        animation: fadeIn 0.3s ease-out forwards;
+    }
+    @@keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+@code {
+    private HashAlgorithmMetadata? _selectedAlgo;
+    private string _inputData = string.Empty;
+    private string _key = string.Empty;
+    private string _hashResult = string.Empty;
+    private double? _timeTakenMs;
+
+    private async void ComputeHash()
+    {
+        if (_selectedAlgo == null || string.IsNullOrEmpty(_inputData)) return;
+
+        try
+        {
+            // 1. Ask WasmHashFactory to instantiate the selected algorithm locally in the browser!
+            var algoInstance = await Factory.CreateAsync(_selectedAlgo.DisplayName.ToString());
+
+            // 2. Prepare the parameters (Saves key if needed)
+            var options = new HashOptions(_inputData);
+
+            // 3. Execute! (No API calls, purely on the user's browser CPU)
+            var result = algoInstance.ComputeHash(options);
+
+            // 4. Update the UI State
+            _hashResult = result.OutPut;
+            _timeTakenMs = result.TimeTakenMilliSeconds;
+        }
+        catch (Exception ex)
+        {
+            _hashResult = $"System Error: {ex}";
+            _timeTakenMs = null;
+        }
+    }
+}
