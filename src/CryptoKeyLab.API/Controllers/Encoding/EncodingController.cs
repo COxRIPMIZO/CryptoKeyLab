@@ -28,17 +28,18 @@ namespace CryptoKeyLab.API.Controllers.Encoding
             var algorithms = await _encodingFactory.GetAvailableAlgorithmsAsync();
 
             //modify the reasult according to the needs of the frontend, for example we can return only the names of the algorithms instead of the whole objects
-            var formattedRes = algorithms.Select(algo => new 
-            {
-                Id = algo.Id,
-                Name = algo.DisplayName,
-                Category = algo.Category,
-                Family = algo.Family,
-                IsActive = algo.IsActive,
-                SortOrder = algo.SortOrder
-            });
+            //var formattedRes = algorithms.Select(algo => new 
+            //{
+            //    Id = algo.Id,
+            //    Name = algo.DisplayName,
+            //    Category = algo.Category,
+            //    Family = algo.Family,
+            //    IsActive = algo.IsActive,
+            //    SortOrder = algo.SortOrder
+            //});
 
-            return Ok(formattedRes);
+            //return Ok(formattedRes);
+            return Ok(algorithms);
         }
 
         // Endpoint to Perform Encoding Based on the Provided Algorithm and Options

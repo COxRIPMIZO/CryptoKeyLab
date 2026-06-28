@@ -28,18 +28,19 @@ namespace CryptoKeyLab.API.Controllers.Hash
             var hashAlgos = await _hashFactory.GetAvailableAlgorithmsAsync();
 
             // We can also add some custom formatting here if needed, for example, to return a more user-friendly name or additional metadata about each algorithm.
-            var formattedAlgos = hashAlgos.Select(algo => new 
-            {
-               Name = algo.DisplayName,
-               AlgoFamily = algo.Family,
-               RequiresSalt = algo.RequiresSalt,
-               RequiredKey = algo.RequiresKey,
-               RequiredIteration = algo.RequiresIterations,
-               IsSecure = algo.IsSecure,
-               IsActive = algo.IsActive
-            });
+            //var formattedAlgos = hashAlgos.Select(algo => new 
+            //{
+            //   Name = algo.DisplayName,
+            //   AlgoFamily = algo.Family,
+            //   RequiresSalt = algo.RequiresSalt,
+            //   RequiredKey = algo.RequiresKey,
+            //   RequiredIteration = algo.RequiresIterations,
+            //   IsSecure = algo.IsSecure,
+            //   IsActive = algo.IsActive
+            //});
 
-            return Ok(formattedAlgos);
+            //return Ok(formattedAlgos);
+            return Ok(hashAlgos);
         }
 
         //Endpoint 2.compute hash for hashing the input we get
