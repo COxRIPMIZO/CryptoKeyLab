@@ -204,7 +204,7 @@ Execute high-performance, stateless transformations over the secure runtime engi
 
 ## 📄 License
 
-Distributed under the GNU License. See [LICENSE](LICENSE) for more information.
+Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 
 ***
 
